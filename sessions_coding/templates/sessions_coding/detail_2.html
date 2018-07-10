@@ -6,7 +6,7 @@
 {% csrf_token %}
 {% for skill in subject.skill_set.all %}
     <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ skill.id }}" />
-    <label for="choice{{ forloop.counter }}">{{ skill.skills }}</label><br />
+    <label for="choice{{ forloop.counter }}">{{ skill.skill }}</label><br />
 {% endfor %}
 <input type="submit" value="Enviar" />
 </form>

@@ -22,7 +22,7 @@ def detail_2(request, subject_id):
 def results(request, skill_id):
     skill = get_object_or_404(Skill,pk=skill_id)
     response = "You're looking at the selected skill:  %s."
-    return HttpResponse(response % skill.skills)
+    return HttpResponse(response % skill.skill)
 
 def vote(request, subject_id):
     subj = get_object_or_404(Subject, pk=subject_id)
