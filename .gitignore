@@ -1,3 +1,8 @@
 data/
 *.txt
 teacher_discourse_form/settings.py
+discourse_form/migrations
+discourse_form/__pycache__
+teacher_discourse_form/__pycache__
+sessions_coding/__pycache__
+sessions_coding/migrations
