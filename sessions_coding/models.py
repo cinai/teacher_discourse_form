@@ -41,10 +41,10 @@ class Axis(models.Model):
         return self.axis
 
 class Skill(models.Model):
-    skills = models.CharField(max_length=40)
+    skill = models.CharField(max_length=40)
     subject = models.ForeignKey(Subject,on_delete=models.CASCADE)
     def __str__(self):
-        return self.skills
+        return self.skill
 
 class Learning_goal(models.Model):
     goal_name = models.CharField(max_length=100)
