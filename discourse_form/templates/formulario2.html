@@ -1,0 +1,7 @@
+<h1>Formulario sesión</h1>
+
+<form action="{% url 'discourse_form:question_2' %}" method="post">
+    {% csrf_token %}
+    {{ form_2 }}
+    <input type="submit" value="Siguiente" />
+</form>

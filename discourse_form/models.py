@@ -1,7 +1,7 @@
 from django.db import models
-from sessions_coding.models import Classroom_session
-# Create your models here.
-class Form(models.Model):
+from sessions_coding.models import Classroom_session,Subject,Axis,Skill,Learning_goal,Copus_code
+
+class Discourse_form(models.Model):
     session = models.ForeignKey(Classroom_session, on_delete=models.CASCADE,default=1)
     init_line = models.IntegerField(default=0)
     end_line = models.IntegerField(default=0)
@@ -10,19 +10,38 @@ class Form(models.Model):
         return self.artificial_name
 
 class Form_answer(models.Model):
-    form = models.ForeignKey(Form, on_delete=models.CASCADE)
+    form = models.ForeignKey(Discourse_form, on_delete=models.CASCADE)
     ans_date = models.DateTimeField('date answered',auto_now_add=True, blank=True)
     user = models.EmailField()
     def __str__(self):
-        return self.form.artificial_name + '-' + str(ans_date)
-
-class Subject(models.Model):
-    subject = models.CharField(max_length=30)
-    def __str__(self):
-        return self.subject
+        return self.form.artificial_name + '-' + str(self.ans_date)
 
 class Answered_subject(models.Model):
     subject = models.ForeignKey(Subject,on_delete=models.CASCADE)
     ans_form = models.ForeignKey(Form_answer, on_delete=models.CASCADE)
     def __str__(self):
-        return self.subject
+        return str(self.subject)
+
+class Answered_axis(models.Model):
+    axis = models.ForeignKey(Axis,on_delete=models.CASCADE)
+    ans_form = models.ForeignKey(Form_answer, on_delete=models.CASCADE)
+    def __str__(self):
+        return str(self.axis)
+
+class Answered_skill(models.Model):
+    skill = models.ForeignKey(Skill,on_delete=models.CASCADE)
+    ans_form = models.ForeignKey(Form_answer, on_delete=models.CASCADE)
+    def __str__(self):
+        return str(self.skill)
+
+class Answered_learning_goal(models.Model):
+    goal = models.ForeignKey(Learning_goal,on_delete=models.CASCADE)
+    ans_form = models.ForeignKey(Form_answer, on_delete=models.CASCADE)
+    def __str__(self):
+        return str(self.goal)
+
+class Answered_copus_code(models.Model):
+    copus_code = models.ForeignKey(Copus_code,on_delete=models.CASCADE)
+    ans_form = models.ForeignKey(Form_answer, on_delete=models.CASCADE)
+    def __str__(self):
+        return str(self.copus_code)
