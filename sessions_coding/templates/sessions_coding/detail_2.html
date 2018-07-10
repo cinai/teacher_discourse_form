@@ -1,0 +1,12 @@
+<h1>{{ subject.subject }}</h1>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form action="{% url 'sessions_coding:form' subject.id %}" method="post">
+{% csrf_token %}
+{% for skill in subject.skill_set.all %}
+    <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ skill.id }}" />
+    <label for="choice{{ forloop.counter }}">{{ skill.skills }}</label><br />
+{% endfor %}
+<input type="submit" value="Enviar" />
+</form>

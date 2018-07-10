@@ -1,0 +1,9 @@
+{% if latest_teacher_list %}
+    <ul>
+    {% for teacher in latest_teacher_list %}
+        <li><a href="{% url 'sessions_coding:detail' teacher.id %}">{{ teacher.teacher }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No teachers are available.</p>
+{% endif %}
