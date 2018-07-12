@@ -6,6 +6,7 @@ class Discourse_form(models.Model):
     init_line = models.IntegerField(default=0)
     end_line = models.IntegerField(default=0)
     artificial_name = models.CharField(max_length=30)
+    text = models.TextField()
     def __str__(self):
         return self.artificial_name
 
