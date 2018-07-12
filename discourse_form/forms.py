@@ -11,16 +11,15 @@ class AfterSubjectForm(forms.Form):
     skill = forms.ModelMultipleChoiceField(queryset=None, widget=forms.CheckboxSelectMultiple())
     axis = forms.ModelMultipleChoiceField(queryset=None, widget=forms.CheckboxSelectMultiple())
     def __init__(self, *args, **kwargs):
-        pk_subject = kwargs.pop('subject_id', None)
-        pk_grade = kwargs.pop('grade_id',None)
+        answered_subject = kwargs.pop('subject', None)
         super().__init__(*args, **kwargs)
-        self.fields['skill'].queryset = Skill.objects.all()#.filter(subject=pk_subject)
-        self.fields['axis'].queryset = Axis.objects.all()#.filter(subject=pk_subject,grade=pk_grade)
+        self.fields['skill'].queryset = Skill.objects.filter(subject=answered_subject.subject)
+        self.fields['axis'].queryset = Axis.objects.filter(subject=answered_subject.subject)
 
 
 class AfterAxisForm(forms.Form):
     goal = forms.ModelMultipleChoiceField(queryset=None, widget=forms.CheckboxSelectMultiple())
     def __init__(self, *args, **kwargs):
-        pk_axis = kwargs.pop('axis_id', None)
+        answered_axis = kwargs.pop('axis', None)
         super().__init__(*args, **kwargs)
-        self.fields['goal'].queryset = Learning_goal.objects.all()#.filter(axis=pk_axis)
+        self.fields['goal'].queryset = Learning_goal.objects.filter(axis=answered_axis.axis)

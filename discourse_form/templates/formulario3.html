@@ -2,6 +2,18 @@
 
 <form action="" method="post">
     {% csrf_token %}
-    {{ form_3 }}
+    <table>
+    <tr>
+        <td></td>
+        <td></td>
+    </tr>
+    {% csrf_token %}
+    {% for axe, form in axis.items %}
+		<tr>
+			<td>Con respecto al eje {{axe}}:</td>
+			<td>{{form}}</td>
+		</tr>
+	{% endfor %}
+	</table>
     <input type="submit" value="Enviar" />
 </form>
