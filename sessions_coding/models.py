@@ -58,4 +58,4 @@ class Copus_code(models.Model):
     long_name = models.TextField()
     eng_code = models.CharField(max_length=4)
     def __str__(self):
-        return self.code
+        return self.long_name#self.code+': '+self.long_name 

@@ -47,7 +47,7 @@ def get_answers(request,form_id):
     else:
         form = TeacherDiscourseForm()
 
-    return render(request, 'formulario.html', {'form': form,'text':text})
+    return render(request, 'formulario.html', {'form': form,'text':text})#[x if x!=" " else "-" for x in text.splitlines()]})
 
 def get_skills(request,form_id,user):
     d_form = Discourse_form.objects.get(id=form_id)
