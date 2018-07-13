@@ -18,7 +18,7 @@ def index(request):
     return HttpResponse("Hello, world. You're at the discourse form index.")
 
 def thanks(request):
-    return HttpResponse("Gracias por su respuesta")
+    return render(request, 'gracias.html')
 
 def get_answers(request,form_id):
     d_form = Discourse_form.objects.get(id=form_id)
