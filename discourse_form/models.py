@@ -14,6 +14,7 @@ class Form_answer(models.Model):
     form = models.ForeignKey(Discourse_form, on_delete=models.CASCADE)
     ans_date = models.DateTimeField('date answered',auto_now_add=True, blank=True)
     user = models.EmailField()
+    done = models.BooleanField(blank=True,default=False)
     def __str__(self):
         return self.form.artificial_name + '-' + str(self.ans_date)
 

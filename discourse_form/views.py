@@ -95,7 +95,9 @@ def get_learning_goals(request,form_id,user):
                 for goal in goals:
                     ans_goal = Answered_learning_goal(ans_form=ans_form,goal=goal)
                     ans_goal.save()
-                return HttpResponseRedirect(reverse('discourse_form:thanks'))
+            d_form.done = True
+            d_form.save()
+            return HttpResponseRedirect(reverse('discourse_form:thanks'))
     # if a GET (or any other method) we'll create a blank form
     context = {}
     context['axis'] = {}
