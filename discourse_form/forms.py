@@ -5,21 +5,33 @@ class TeacherDiscourseForm(forms.Form):
     email = forms.EmailField(label='E-mail', max_length=100,widget=forms.EmailInput(attrs={'class': 'form-control','required':True,'placeholder':'Ingrese aquí su email'}))
     subject = forms.ModelMultipleChoiceField(queryset=Subject.objects.all(), widget=forms.CheckboxSelectMultiple())
     copus_code = forms.ModelMultipleChoiceField(queryset=Copus_code.objects.all(), widget=forms.CheckboxSelectMultiple())#attrs={'class':'list-group'}))
-
+    def __init__(self, *args, **kwargs):
+        initial_subjects = kwargs.pop('initial_subjects', None)
+        initial_email = kwargs.pop('initial_email', None)
+        initial_cc = kwargs.pop('initial_cc', None) 
+        super().__init__(*args, **kwargs)
+        self.fields['subject'].initial = initial_subjects
+        self.fields['email'].initial = initial_email
+        self.fields['copus_code'].initial = initial_cc
 
 class AfterSubjectForm(forms.Form):
     skill = forms.ModelMultipleChoiceField(queryset=None, widget=forms.CheckboxSelectMultiple())
     axis = forms.ModelMultipleChoiceField(queryset=None, widget=forms.CheckboxSelectMultiple())
     def __init__(self, *args, **kwargs):
         answered_subject = kwargs.pop('subject', None)
+        initial_skills = kwargs.pop('initial_skills', None)
+        initial_axis = kwargs.pop('initial_axis', None) 
         super().__init__(*args, **kwargs)
         self.fields['skill'].queryset = Skill.objects.filter(subject=answered_subject.subject)
         self.fields['axis'].queryset = Axis.objects.filter(subject=answered_subject.subject)
-
+        self.fields['skill'].initial = initial_skills
+        self.fields['axis'].initial = initial_axis
 
 class AfterAxisForm(forms.Form):
     goal = forms.ModelMultipleChoiceField(queryset=None, widget=forms.CheckboxSelectMultiple())
     def __init__(self, *args, **kwargs):
         answered_axis = kwargs.pop('axis', None)
+        initial_goals = kwargs.pop('initial_goals', None)
         super().__init__(*args, **kwargs)
         self.fields['goal'].queryset = Learning_goal.objects.filter(axis=answered_axis.axis)
+        self.fields['goal'].initial = initial_goals
