@@ -34,7 +34,7 @@ class Subject(models.Model):
         return self.subject
 
 class Axis(models.Model):
-    axis = models.CharField(max_length=30)
+    axis = models.CharField(max_length=50)
     subject = models.ForeignKey(Subject,on_delete=models.CASCADE)
     grade = models.ForeignKey(Grade,on_delete=models.CASCADE,default=1)
     def __str__(self):

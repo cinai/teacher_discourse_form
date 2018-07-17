@@ -64,8 +64,9 @@ def get_answers_back(request,form_id,user):
     mail = signing.loads(user)
     ans_form = Form_answer.objects.get(form=d_form,user=mail)
     subjects = Answered_subject.objects.filter(ans_form=ans_form)
+    grade_session = d_form.session.grade
     if request.method == 'POST':
-        the_forms = [AfterSubjectForm(request.POST,subject=x,prefix=x.subject.subject) for x in subjects]
+        the_forms = [AfterSubjectForm(request.POST,subject=x,grade_session=grade_session,prefix=x.subject.subject) for x in subjects]
         # if there was a previous answer, delete it
         if Answered_skill.objects.filter(ans_form=ans_form).exists():
             Answered_skill.objects.filter(ans_form=ans_form).delete()
@@ -92,11 +93,12 @@ def get_answers_back(request,form_id,user):
 
 def get_skills(request,form_id,user):
     d_form = Discourse_form.objects.get(id=form_id)
+    grade_session = d_form.session.grade
     mail = signing.loads(user)
     ans_form = Form_answer.objects.get(form=d_form,user=mail)
     subjects = Answered_subject.objects.filter(ans_form=ans_form)
     if request.method == 'POST':
-        the_forms = [AfterSubjectForm(request.POST,subject=x,prefix=x.subject.subject) for x in subjects]
+        the_forms = [AfterSubjectForm(request.POST,subject=x,grade_session=grade_session,prefix=x.subject.subject) for x in subjects]
         if all([form_2.is_valid() for form_2 in the_forms]):
             # if there was a previous answer, delete it
             if Answered_skill.objects.filter(ans_form=ans_form).exists():
@@ -117,6 +119,13 @@ def get_skills(request,form_id,user):
                     ans_axe.save()
             # redirect to next form
             return HttpResponseRedirect(reverse('discourse_form:question_3', kwargs={'form_id':form_id,'user':user}))
+        else:
+            print("ERROR")
+            for form_2 in the_forms:
+                if not form_2.is_valid():
+                    print(form_2.errors)
+                # save skill
+
     # if a GET (or any other method) we'll create a blank form
     context = {}
     context['subjects'] = {}
@@ -132,7 +141,7 @@ def get_skills(request,form_id,user):
             initial_axis = [x.axis.id for x in Answered_axis.objects.filter(ans_form=ans_form)]
         else:
             initial_axis = []
-        form_2 = AfterSubjectForm(subject=ans_subject,prefix=subject_name,initial_skills=initial_skills,initial_axis=initial_axis)
+        form_2 = AfterSubjectForm(subject=ans_subject,grade_session=grade_session,prefix=subject_name,initial_skills=initial_skills,initial_axis=initial_axis)
         context['subjects'][subject_name] = form_2            
     text = d_form.text
     context['text'] = text

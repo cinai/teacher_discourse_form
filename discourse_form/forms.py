@@ -19,11 +19,12 @@ class AfterSubjectForm(forms.Form):
     axis = forms.ModelMultipleChoiceField(queryset=None, widget=forms.CheckboxSelectMultiple())
     def __init__(self, *args, **kwargs):
         answered_subject = kwargs.pop('subject', None)
+        grade_session = kwargs.pop('grade_session', None)
         initial_skills = kwargs.pop('initial_skills', None)
         initial_axis = kwargs.pop('initial_axis', None) 
         super().__init__(*args, **kwargs)
         self.fields['skill'].queryset = Skill.objects.filter(subject=answered_subject.subject)
-        self.fields['axis'].queryset = Axis.objects.filter(subject=answered_subject.subject)
+        self.fields['axis'].queryset = Axis.objects.filter(subject=answered_subject.subject,grade=grade_session)
         self.fields['skill'].initial = initial_skills
         self.fields['axis'].initial = initial_axis
 
