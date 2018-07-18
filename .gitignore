@@ -1,5 +1,9 @@
-data/
 *.txt
+*.pyc
+db.sqlite3
+__pycache__
+local_settings.py
+data/
 teacher_discourse_form/settings.py
 discourse_form/migrations
 discourse_form/__pycache__

@@ -1,0 +1,1 @@
+web: gunicorn teacher_discourse_form.wsgi --log-file -
