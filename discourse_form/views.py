@@ -15,7 +15,7 @@ from .models import (
     Answered_copus_code)
 
 def index(request):
-    return HttpResponse("Hello, world. You're at the discourse form index.")
+    return HttpResponse("Me parece sospechosa tu actitud")
 
 def thanks(request):
     return render(request, 'gracias.html')
