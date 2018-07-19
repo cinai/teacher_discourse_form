@@ -54,7 +54,7 @@ class Learning_goal(models.Model):
         return self.goal_name
 
 class Copus_code(models.Model):
-    code = models.CharField(max_length=4)
+    code = models.CharField(max_length=6)
     long_name = models.TextField()
     eng_code = models.CharField(max_length=4)
     def __str__(self):
