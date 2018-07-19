@@ -242,6 +242,6 @@ def get_learning_goals(request,form_id,user):
 
 
 def stupid(request):
-    return render(request, 'chistosito.html')
+    return HttpResponseNotFound('<h1>Página no encontrada por la amargura de algunos</h1>')
 def yachao(request):
     return render(request, 'chao.html')
