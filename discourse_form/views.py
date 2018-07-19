@@ -239,3 +239,7 @@ def get_learning_goals(request,form_id,user):
     context['user_m'] = user
     context['form_id'] = form_id
     return render(request, 'formulario3.html', context)
+
+
+def stupid(request):
+    return render(request, 'chistosito.html')
