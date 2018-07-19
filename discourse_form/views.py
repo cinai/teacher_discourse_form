@@ -55,7 +55,7 @@ def get_answers_2(request,form_id):
     else:
         form = TeacherDiscourseForm()
 
-    return render(request, 'test.html', {'form': form,'text':text.splitlines(),'form_id':form_id})#[x if x!=" " else "-" for x in text.splitlines()]})
+    return render(request, 'test.html', {'form': form,'text':text,'form_id':form_id})#[x if x!=" " else "-" for x in text.splitlines()]})
 
 def get_answers(request,form_id):
     d_form = Discourse_form.objects.get(id=form_id)
@@ -93,7 +93,7 @@ def get_answers(request,form_id):
     else:
         form = TeacherDiscourseForm()
 
-    return render(request, 'formulario.html', {'form': form,'text':text,'form_id':form_id})#[x if x!=" " else "-" for x in text.splitlines()]})
+    return render(request, 'formulario.html', {'form': form,'text':text.splitlines(),'form_id':form_id})#[x if x!=" " else "-" for x in text.splitlines()]})
 
 def get_answers_back(request,form_id,user):
     d_form = Discourse_form.objects.get(id=form_id)

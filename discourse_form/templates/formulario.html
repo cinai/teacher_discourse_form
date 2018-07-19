@@ -31,36 +31,59 @@
         </div>
       </div>
       <div class="row">
-          <div class="col-md-12 order-md-1">
-          
+        <div class="col-md-12 order-md-1">
           <div class="panel panel-info">
 
             <div class="panel-heading">
               Fragmento de sesión a describir
             </div>
             <div class="panel-body">
-                <pre class="pre-scrollable" style='white-space:pre-wrap;word-break: keep-all;'>{{ text }}</pre>
-              </div>
+{% for line in text %}
+<p>{{ forloop.counter}} - {{ line }}</p>
+{% endfor %}
+            </div>
           </div>
         </div>
         </div>
         <div class="row">
-          <div class="col-md-1 order-md-2 mb-4">
-          </div>
-          <div class="col-md-11 order-md-1">
-            <form action={% url 'discourse_form:encuesta' form_id %} method="post">
+        <div class="col-md-1 order-md-2 mb-4"></div>
+        <div class="col-md-11 order-md-1">
+          <form action={% url 'discourse_form:encuesta' form_id %} method="post">
             {% csrf_token %}
               <div class="form-group" style="margin-bottom:5%">
                   <label class="label-spec" for="id_email">Ingrese su email:</label>
                   {{ form.email }}
               </div>
               <div class="form-group" style="margin-bottom:5%">
+                {% if form.subject.errors %}
+                  <script>
+                      alert('Es necesario que seleccione al menos una asignatura');
+                  </script>
+                {% endif %}
                   <label class="label-spec" for="id_subject">Seleccione las asignaturas presentes en la sesión:</label>
                   {{ form.subject }}
               </div>
               <div class="form-group" style="margin-bottom:5%">
-                  <label class="label-spec" for="id_copus_code">Seleccione las acciones que observa en el docente:</label>
-                  {{ form.copus_code }}
+              <div class="fieldWrapper">
+                {% if form.copus_code.errors %}
+                  {% if form.subject.errors %}
+                  {% else %}
+                  <script>
+                      alert('Es necesario que seleccione al menos un evento del protocolo COPUS');
+                  </script>
+                  {% endif %}
+                {% endif %}
+                    <label class="label-spec" for="id_copus_code">Seleccione las acciones que observa en el docente:</label>
+                    {% for field in form.copus_code %}
+                    <div class="fieldWrapper">
+                        
+                        {{ field.label_tag }} {{ field }}
+                    </div>
+                    {% endfor %}
+                </div>
+              </div>
+                  
+                  
               </div>
            <div class="container-contact100-form-btn">
             <button type="submit" class="contact100-form-btn" >
