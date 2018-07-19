@@ -7,6 +7,8 @@
     <meta name="author" content="">
     <link rel="icon" href="../../../../favicon.ico">
     {% load static %}
+    {% load my_tags %}
+
     <title>Discurso docente</title>
 
     <!-- Bootstrap core CSS -->
@@ -60,15 +62,24 @@
 				<tr>
 					<td>
 						<div class="form-group" style="margin-bottom:5%">
-                  			<label class="label-spec" for="id_skill">Las habilidades presentes en la sesión:</label>
-                  			{{ form.skill}}
-              			</div>
+              <div class="col-md-11" style="margin-bottom:1%">
+              <label class="label-spec" for="id_skill">Las <b>habilidades</b> presentes en la sesión:</label>
+              </div>
+              <div class="col-md-4">
+                <ul>
+                  {% for field in form.skill %}
+                    {% ifequal forloop.counter0|modulo:5 0 %}</ul></div><div class="col-md-4"><ul>{% endifequal %}
+                    <li>{{ field }}</li>
+                  {% endfor %}
+                </ul>
+              </div>
+      			</div>
 					</td>
 				</tr>
 				<tr>
 					<td>
-						<div class="form-group" style="margin-bottom:5%">
-                  			<label class="label-spec" for="id_axis">Los ejes presentes en la sesión:</label>
+						<div class="form-group" style="margin-top:2%;margin-bottom:5%">
+                  			<label class="label-spec" for="id_axis">Los <b>ejes</b> presentes en la sesión:</label>
                   			{{ form.axis}}
               			</div>
 					</td>
