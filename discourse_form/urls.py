@@ -14,4 +14,5 @@ urlpatterns = [
     path('encuesta/<int:form_id>/habilidades_y_eje/<str:user>', views.get_skills, name='question_2'),
     path('gracias/', views.thanks, name='thanks'),
     path('nadienuncasevaameteraca/', views.stupid, name='stupid'),
+    path('yachao/', views.yachao, name='yachao'),
 ]

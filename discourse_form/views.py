@@ -243,3 +243,5 @@ def get_learning_goals(request,form_id,user):
 
 def stupid(request):
     return render(request, 'chistosito.html')
+def yachao(request):
+    return render(request, 'chao.html')

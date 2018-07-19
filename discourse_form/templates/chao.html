@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../../../favicon.ico">
+    {% load static %}
+    {% load my_tags %}
+
+    <title>Discurso docente</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static "vendor/bootstrap/css/bootstrap.min.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "fonts/font-awesome-4.7.0/css/font-awesome.min.css" %}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static "fonts/iconic/css/material-design-iconic-font.min.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/util.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/main.css" %}">
+    <!-- Custom styles for this template
+    <link href="form-validation.css" rel="stylesheet"> -->
+    <style media="screen" type="text/css">
+    	.bouncyHouse {
+    height:700px;
+    width:900px;
+    background-color: white;
+    position: relative;
+}
+
+.bouncer {
+    position: absolute;
+    width: 200px;
+}
+
+.border {
+    width:0%;
+    position: relative;
+}
+    </style>
+  </head>
+
+  <body>
+
+<div >
+  	<div class="bouncyHouse" style="width:100%; margin:0 auto;">
+                <div class="bouncer">
+                    <h1>Ya CHAO</h1> </div>
+    </div>
+</div>
+</body>
+<script src="http://code.jquery.com/jquery-1.6.min.js"></script>
+<script>
+	var vx = 3;
+var vy = 4;
+
+function hitLR(el, bounding) {
+    if (el.offsetLeft <= 0 && vx < 0) {
+        console.log('LEFT');
+        vx = -1 * vx;
+    }
+    if ((el.offsetLeft + el.offsetWidth) >= bounding.offsetWidth) {
+        console.log('RIGHT');
+        vx = -1 * vx;
+    }
+    if (el.offsetTop <= 0 && vy < 0) {
+        console.log('TOP');
+        vy = -1 * vy;
+    }
+    if ((el.offsetTop + el.offsetHeight) >= bounding.offsetHeight) {
+        console.log('BOTTOM');
+        vy = -1 * vy;
+    }
+}
+
+function mover(el, bounding) {
+    hitLR(el, bounding);
+    el.style.left = el.offsetLeft + vx + 'px';
+    el.style.top = el.offsetTop + vy + 'px';
+    setTimeout(function() {
+        mover(el, bounding);
+    }, 50);
+}
+
+setTimeout(function() {
+    mover($('.bouncer')[0], $('.bouncyHouse')[0]);
+}, 50);
+</script></script></html>
