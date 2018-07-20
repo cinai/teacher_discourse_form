@@ -227,18 +227,25 @@ def get_learning_goals(request,form_id,user):
             ans_form.done = True
             ans_form.save()
             return HttpResponseRedirect(reverse('discourse_form:thanks'))
-    # if a GET (or any other method) we'll create a blank form
-    context = {}
-    context['axis'] = {}
-    for ans_axe in ans_axis:
-        # send subject name and form
-        axe_name = ans_axe.axis.axis
-        if Answered_learning_goal.objects.filter(ans_form=ans_form).exists():
-            initial_goals = [x.goal.id for x in Answered_learning_goal.objects.filter(ans_form=ans_form)]
         else:
-            initial_goals = []
-        form_3 = AfterAxisForm(axis=ans_axe,prefix=axe_name,initial_goals=initial_goals)
-        context['axis'][axe_name] = form_3 
+            context = {}
+            context['axis'] = {}
+            for i,ans_axe in enumerate(ans_axis):
+                axe_name = ans_axe.axis.axis
+                context['axis'][axe_name] = the_forms[i]
+    else:
+    # if a GET (or any other method) we'll create a blank form
+        context = {}
+        context['axis'] = {}
+        for ans_axe in ans_axis:
+            # send subject name and form
+            axe_name = ans_axe.axis.axis
+            if Answered_learning_goal.objects.filter(ans_form=ans_form).exists():
+                initial_goals = [x.goal.id for x in Answered_learning_goal.objects.filter(ans_form=ans_form)]
+            else:
+                initial_goals = []
+            form_3 = AfterAxisForm(axis=ans_axe,prefix=axe_name,initial_goals=initial_goals)
+            context['axis'][axe_name] = form_3 
     text = d_form.text
     context['text'] = text
     context['user_m'] = user

@@ -67,6 +67,9 @@
               			</div>
 					</td>
 				</tr>
+      {% if form.goal.errors %}
+        <script>alert('Es necesario que seleccione al menos una objetivo de aprendizaje');</script>
+      {% endif %}
 			{% endfor %}
 			</table>
       <div class="col-md-4 order-md-1">

@@ -56,13 +56,7 @@
 
 				<tr>
 					<td>
-        {% if form.skill.errors %}
-        <script>alert('Es necesario que seleccione al menos una habilidad');</script>
-        {% else %}
-          {% if form.axis.errors %}
-          <script>alert('Es necesario que seleccione al menos un eje');</script>
-          {% endif %}
-        {% endif %}
+
 							<div class="" style="margin-bottom:2%">
 									Con respecto a la asignatura <b>{{subject}}</b>, seleccione:
 							</div>
@@ -118,6 +112,13 @@
 
 					</td>
 				</tr>
+        {% if form.skill.errors %}
+        <script>alert('Es necesario que seleccione al menos una habilidad');</script>
+        {% else %}
+          {% if form.axis.errors %}
+          <script>alert('Es necesario que seleccione al menos un eje');</script>
+          {% endif %}
+        {% endif %}
 			{% endfor %}
 			</table>
       <div class="col-md-4 order-md-1">
