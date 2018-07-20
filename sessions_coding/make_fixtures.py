@@ -47,7 +47,7 @@ for pk,grade in enumerate(grades):
 	les_dict.append(a_dict)
 
 # load copus codes #check the output then
-copus_codes = [{"model": "sessions_coding.copus_code", "pk": 1, "fields": {"code": "Exp", "long_name": "Exponiendo: presentando contenido, derivando resultados matem\u00e1ticos, presentando la soluci\u00f3n a un problema, etc.", "eng_code": "Lec"}}, {"model": "sessions_coding.copus_code", "pk": 2, "fields": {"code": "Esp", "long_name": "Esperando: en un momento en que est\u00e1 la posibilidad de interactuar o observar alguna actividad y el profesor no lo est\u00e1 haciendo", "eng_code": "W"}}, {"model": "sessions_coding.copus_code", "pk": 3, "fields": {"code": "EP", "long_name": "Escribiendo en la pizarra (suele marcarse junto a Exponiendo)", "eng_code": "RtW"}}, {"model": "sessions_coding.copus_code", "pk": 4, "fields": {"code": "Ret", "long_name": "Dando retroalimentaci\u00f3n o seguimiento sobre una pregunta o actividad a la clase completa", "eng_code": "FUp"}}, {"model": "sessions_coding.copus_code", "pk": 5, "fields": {"code": "Pre", "long_name": "Preguntando a los estudiantes", "eng_code": "PQ"}}, {"model": "sessions_coding.copus_code", "pk": 6, "fields": {"code": "Esc", "long_name": "Escuchando o respondiendo una pregunta de un estudiante, con el resto de la clase escuchando", "eng_code": "AnQ"}}, {"model": "sessions_coding.copus_code", "pk": 7, "fields": {"code": "Mov", "long_name": "Movi\u00e9ndose a trav\u00e9s de la sala guiando el trabajo de estudiantes durante tareas de aprendizaje activo", "eng_code": "MG"}}, {"model": "sessions_coding.copus_code", "pk": 8, "fields": {"code": "1o1", "long_name": "Discusi\u00f3n extendida uno a uno, entre el profesor y uno o pocos estudiantes, sin prestar atenci\u00f3n al resto de la clase. Usualmente marcada junto a MG o AnQ.", "eng_code": "1o1"}}, {"model": "sessions_coding.copus_code", "pk": 9, "fields": {"code": "Mos", "long_name": "Mostrando o llevando a cabo un experimento, v\u00eddeo, animaci\u00f3n, demostraci\u00f3n o simulaci\u00f3n.", "eng_code": "D/V"}}, {"model": "sessions_coding.copus_code", "pk": 10, "fields": {"code": "Admi", "long_name": "Administrando la sala (asignar tareas, recibir pruebas, etc.)", "eng_code": "Adm"}}]
+copus_codes = [{"model": "sessions_coding.copus_code", "pk": 1, "fields": {"code": "Expo", "long_name": "Exponiendo, presentando contenido, derivando resultados matem\u00e1ticos, presentando la soluci\u00f3n a un problema, etc.", "eng_code": "Lec"}}, {"model": "sessions_coding.copus_code", "pk": 2, "fields": {"code": "Espera", "long_name": "Esperando, en un momento en que est\u00e1 la posibilidad de interactuar o observar alguna actividad y el profesor no lo est\u00e1 haciendo", "eng_code": "W"}}, {"model": "sessions_coding.copus_code", "pk": 3, "fields": {"code": "Pizarr", "long_name": "Escribiendo en la pizarra (suele marcarse junto a Exponiendo)", "eng_code": "RtW"}}, {"model": "sessions_coding.copus_code", "pk": 4, "fields": {"code": "Retro", "long_name": "Dando retroalimentaci\u00f3n o seguimiento sobre una pregunta o actividad a la clase completa", "eng_code": "FUp"}}, {"model": "sessions_coding.copus_code", "pk": 5, "fields": {"code": "Preg", "long_name": "Preguntando a los estudiantes", "eng_code": "PQ"}}, {"model": "sessions_coding.copus_code", "pk": 6, "fields": {"code": "Escu", "long_name": "Escuchando o respondiendo una pregunta de un estudiante, con el resto de la clase escuchando", "eng_code": "AnQ"}}, {"model": "sessions_coding.copus_code", "pk": 7, "fields": {"code": "Mov", "long_name": "Movi\u00e9ndose a trav\u00e9s de la sala guiando el trabajo de estudiantes durante tareas de aprendizaje activo", "eng_code": "MG"}}, {"model": "sessions_coding.copus_code", "pk": 8, "fields": {"code": "1a1", "long_name": "Discusi\u00f3n extendida uno a uno, entre el profesor y uno o pocos estudiantes, sin prestar atenci\u00f3n al resto de la clase. Usualmente marcada junto a [Mov] o [Escu].", "eng_code": "1o1"}}, {"model": "sessions_coding.copus_code", "pk": 9, "fields": {"code": "Mos", "long_name": "Mostrando o llevando a cabo un experimento, v\u00eddeo, animaci\u00f3n, demostraci\u00f3n o simulaci\u00f3n.", "eng_code": "D/V"}}, {"model": "sessions_coding.copus_code", "pk": 10, "fields": {"code": "Admin", "long_name": "Administrando la sala (asignar tareas, recibir pruebas, etc.)", "eng_code": "Adm"}}]
 les_dict = les_dict + copus_codes
 
 # load skills
@@ -59,7 +59,7 @@ for i,row in df_subjects.iterrows():
 
 
 for i,row in df_skills.iterrows():
-	a_dict = {'model':'sessions_coding.skill','pk':row.id,'fields':{'skill':row.nombre,'subject':dict_subject_id[row.subsector_id]}}
+	a_dict = {'model':'sessions_coding.skill','pk':row.id,'fields':{'skill':row.nombre,'subject':dict_subject_id[row.subsector_id],'description':row.descripcion}}
 	les_dict.append(a_dict)
 
 # load axis and oa
@@ -74,10 +74,13 @@ for i,row in df_oa.iterrows():
 		les_dict.append(a_dict)
 		counter += 1
 	# add oa
-	a_dict = {'model':'sessions_coding.learning_goal','pk':row.id,'fields':{'goal_name':row.desccorta,'long_name':row.desclarga,'axis':dict_axis[super_key]}}
+	desccorta = row.desccorta
+	if desccorta == "":
+		desccorta = row.desclarga[:100]
+	a_dict = {'model':'sessions_coding.learning_goal','pk':row.id,'fields':{'goal_name':desccorta,'long_name':row.desclarga,'axis':dict_axis[super_key]}}
 	les_dict.append(a_dict)
 
 # output the json file
-with open('fixtures\data.json', 'w') as outfile:
+with open('fixtures\data_try.json', 'w') as outfile:
 	json.dump(les_dict, outfile)
 
