@@ -54,41 +54,55 @@
     		{% for subject, form in subjects.items %}
 				<tr>
 					<td>
-							<div class="" style="margin-bottom:5%">
+							<div class="" style="margin-bottom:2%">
 									Con respecto a la asignatura <b>{{subject}}</b>, seleccione:
 							</div>
 					</td>
 				</tr>
 				<tr>
 					<td>
-						<div class="form-group" style="margin-bottom:5%">
+            {% if form.skill|length > 0 %}
+            <div class="form-group" style="margin-top:2%;margin-bottom:5%">
               <div class="col-md-11" style="margin-bottom:1%">
               <label class="label-spec" for="id_skill">Las <b>habilidades</b> presentes en la sesión:</label>
               </div>
-              <div class="col-md-4">
-                <ul>
-                  {% for field in form.skill %}
-                    {% ifequal forloop.counter0|modulo:6 0 %}</ul></div><div class="col-md-4"><ul>{% endifequal %}
-                    <li>{{ field }}</li>
-                  {% endfor %}
-                </ul>
-              </div>
-      			</div>
+                {% if form.skill|length < 7 %}
+                <div class="col-md-11">
+                  <ul>
+                    {% for field in form.skill %}
+                      <li>{{ field }}</li>
+                    {% endfor %}
+                  </ul>
+                </div>
+                {% else %}
+                <div class="col-md-4">
+                  <ul>
+                    {% for field in form.skill %}
+                      {% ifequal forloop.counter0|modulo:6 0 %}</ul></div><div class="col-md-4"><ul>{% endifequal %}
+                      <li>{{ field }}</li>
+                    {% endfor %}
+                  </ul>
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
 					</td>
 				</tr>
 				<tr>
 					<td>
 						<div class="form-group" style="margin-top:2%;margin-bottom:5%">
-              {% if form.axis.count %}
-                  			<label class="label-spec" for="id_axis">Los <b>ejes</b> presentes en la sesión:</label>
-                  			{{ form.axis}}
-              			</div>
-              {% else %}
+              {% ifequal form.axis|length 0 %}
               <script>
-                alert('Esta sesión no cuenta con ejes asociados, por favor antes de continuar contactese con Catalina');
+                alert('Esta sesión no cuenta con ejes asociados a {{subject}}, por favor antes de continuar contactese con Catalina');
               </script>
+              {% else %}
+              <div class="col-md-11" style="margin-bottom:2%">
+              <label class="label-spec" for="id_axis" style="margin-bottom:1%"">Los <b>ejes</b> presentes en la sesión:</label>
               {{ form.axis}}
-              {% endif %}
+              </div>
+              {% endifequal %}
+            </div>
+
 					</td>
 				</tr>
 			{% endfor %}
