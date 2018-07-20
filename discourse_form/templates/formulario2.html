@@ -39,7 +39,11 @@
                 Fragmento de sesión a describir
               </div>
               <div class="panel-body">
-                <pre class="pre-scrollable " style='white-space:pre-wrap;word-break: keep-all;'>{{ text }}</pre>
+              <pre class="pre-scrollable " style='white-space:pre-wrap;word-break: keep-all;'>
+{% for line in text %}
+{{ forloop.counter}}- {{ line }}
+{% endfor %}
+            <pre>
               </div>
             </div>
           </div>

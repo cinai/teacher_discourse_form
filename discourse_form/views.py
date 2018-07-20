@@ -125,7 +125,7 @@ def get_answers_back(request,form_id,user):
         initial_subjects = [x.subject.id for x in Answered_subject.objects.filter(ans_form=ans_form)]
         initial_cc = [x.copus_code.id for x in Answered_copus_code.objects.filter(ans_form=ans_form)]
         form = TeacherDiscourseForm(initial_email=mail,initial_subjects=initial_subjects,initial_cc=initial_cc)
-        return render(request, 'formulario.html', {'form': form,'text':text,'form_id':form_id})
+        return render(request, 'formulario.html', {'form': form,'text':text.splitlines(),'form_id':form_id})
     return HttpResponseNotFound('<h1>Page not found</h1>')
 
 def get_skills(request,form_id,user):
@@ -186,7 +186,7 @@ def get_skills(request,form_id,user):
             form_2 = AfterSubjectForm(subject=ans_subject,grade_session=grade_session,prefix=subject_name,initial_skills=initial_skills,initial_axis=initial_axis)
             context['subjects'][subject_name] = form_2            
     text = d_form.text
-    context['text'] = text
+    context['text'] = text.splitlines()
     context['user_m'] = user
     context['form_id'] = form_id
     return render(request, 'formulario2.html', context)
@@ -247,7 +247,7 @@ def get_learning_goals(request,form_id,user):
             form_3 = AfterAxisForm(axis=ans_axe,prefix=axe_name,initial_goals=initial_goals)
             context['axis'][axe_name] = form_3 
     text = d_form.text
-    context['text'] = text
+    context['text'] = text.splitlines()
     context['user_m'] = user
     context['form_id'] = form_id
     return render(request, 'formulario3.html', context)
