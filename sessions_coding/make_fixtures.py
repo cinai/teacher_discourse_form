@@ -59,6 +59,9 @@ for i,row in df_subjects.iterrows():
 
 
 for i,row in df_skills.iterrows():
+	description = row.descripcion
+	if description != description:
+		description = ""
 	a_dict = {'model':'sessions_coding.skill','pk':row.id,'fields':{'skill':row.nombre,'subject':dict_subject_id[row.subsector_id],'description':row.descripcion}}
 	les_dict.append(a_dict)
 
@@ -75,7 +78,7 @@ for i,row in df_oa.iterrows():
 		counter += 1
 	# add oa
 	desccorta = row.desccorta
-	if desccorta == "":
+	if desccorta != desccorta:
 		desccorta = row.desclarga[:100]
 	a_dict = {'model':'sessions_coding.learning_goal','pk':row.id,'fields':{'goal_name':desccorta,'long_name':row.desclarga,'axis':dict_axis[super_key]}}
 	les_dict.append(a_dict)
