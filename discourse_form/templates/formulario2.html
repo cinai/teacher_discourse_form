@@ -85,6 +85,10 @@
                 </div>
                 {% endif %}
             </div>
+            {% else %}
+            <script>
+                alert('Esta sesión no cuenta con habilidades asociados a {{subject}}, por favor antes de continuar contactese con Catalina');
+              </script>
             {% endif %}
 					</td>
 				</tr>
