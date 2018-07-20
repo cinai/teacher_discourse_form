@@ -19,6 +19,28 @@ def index(request):
 
 def thanks(request):
     return render(request, 'gracias.html')
+
+def clean_spaces(a_list):
+    new_list = []
+    initial = -1
+    for i,element in enumerate(a_list):
+        if element == "":
+            if initial == -1:
+                initial = i
+        else:
+            if initial != -1:
+                seconds = (i-initial)*15
+                if seconds > 60:
+                    if int(seconds/60) > 1:
+                        new_list.append('*** Sin transcripción disponible durante '+ str(int(seconds/60)) +' minutos ***')
+                    else:
+                        new_list.append('*** Sin transcripción disponible durante '+ str(int(seconds/60)) +' minuto ***')
+                else:
+                    new_list.append('*** Sin transcripción disponible durante '+ str(seconds) +' segundos ***')
+                initial = -1
+            new_list.append(element)
+    return new_list
+
 def get_answers_2(request,form_id):
     d_form = Discourse_form.objects.get(id=form_id)
     text = d_form.text
@@ -93,7 +115,7 @@ def get_answers(request,form_id):
     else:
         form = TeacherDiscourseForm()
 
-    return render(request, 'formulario.html', {'form': form,'text':text.splitlines(),'form_id':form_id})#[x if x!=" " else "-" for x in text.splitlines()]})
+    return render(request, 'formulario.html', {'form': form,'text':clean_spaces(text.splitlines()),'form_id':form_id})#[x if x!=" " else "-" for x in text.splitlines()]})
 
 def get_answers_back(request,form_id,user):
     d_form = Discourse_form.objects.get(id=form_id)
@@ -125,7 +147,7 @@ def get_answers_back(request,form_id,user):
         initial_subjects = [x.subject.id for x in Answered_subject.objects.filter(ans_form=ans_form)]
         initial_cc = [x.copus_code.id for x in Answered_copus_code.objects.filter(ans_form=ans_form)]
         form = TeacherDiscourseForm(initial_email=mail,initial_subjects=initial_subjects,initial_cc=initial_cc)
-        return render(request, 'formulario.html', {'form': form,'text':text.splitlines(),'form_id':form_id})
+        return render(request, 'formulario.html', {'form': form,'text':clean_spaces(text.splitlines()),'form_id':form_id})
     return HttpResponseNotFound('<h1>Page not found</h1>')
 
 def get_skills(request,form_id,user):
@@ -186,7 +208,7 @@ def get_skills(request,form_id,user):
             form_2 = AfterSubjectForm(subject=ans_subject,grade_session=grade_session,prefix=subject_name,initial_skills=initial_skills,initial_axis=initial_axis)
             context['subjects'][subject_name] = form_2            
     text = d_form.text
-    context['text'] = text.splitlines()
+    context['text'] = clean_spaces(text.splitlines())
     context['user_m'] = user
     context['form_id'] = form_id
     return render(request, 'formulario2.html', context)
@@ -247,7 +269,7 @@ def get_learning_goals(request,form_id,user):
             form_3 = AfterAxisForm(axis=ans_axe,prefix=axe_name,initial_goals=initial_goals)
             context['axis'][axe_name] = form_3 
     text = d_form.text
-    context['text'] = text.splitlines()
+    context['text'] = clean_spaces(text.splitlines())
     context['user_m'] = user
     context['form_id'] = form_id
     return render(request, 'formulario3.html', context)
