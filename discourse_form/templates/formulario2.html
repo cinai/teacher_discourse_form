@@ -53,10 +53,16 @@
     		{% csrf_token %}
 
     		{% for subject, form in subjects.items %}
-        {% if form.errors %}
+        {% if form.skill.errors %}
         <script>
-            alert('Es necesario que seleccione al menos una opción por pregunta');
+            alert('Es necesario que seleccione al menos una habilidad');
         </script>
+        {% else %}
+          {% if form.axis.errors %}
+          <script>
+            alert('Es necesario que seleccione al menos un eje');
+        </script>
+          {% endif %}
         {% endif %}
 				<tr>
 					<td>
