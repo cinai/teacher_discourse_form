@@ -43,7 +43,7 @@ class Axis(models.Model):
 class Skill(models.Model):
     skill = models.CharField(max_length=40)
     subject = models.ForeignKey(Subject,on_delete=models.CASCADE)
-    description = models.TextField()
+    description = models.TextField(default="")
     def __str__(self):
         return self.skill
 
