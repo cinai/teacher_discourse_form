@@ -53,19 +53,16 @@
     		{% csrf_token %}
 
     		{% for subject, form in subjects.items %}
-        {% if form.skill.errors %}
-        <script>
-            alert('Es necesario que seleccione al menos una habilidad');
-        </script>
-        {% else %}
-          {% if form.axis.errors %}
-          <script>
-            alert('Es necesario que seleccione al menos un eje');
-        </script>
-          {% endif %}
-        {% endif %}
+
 				<tr>
 					<td>
+        {% if form.skill.errors %}
+        <script>alert('Es necesario que seleccione al menos una habilidad');</script>
+        {% else %}
+          {% if form.axis.errors %}
+          <script>alert('Es necesario que seleccione al menos un eje');</script>
+          {% endif %}
+        {% endif %}
 							<div class="" style="margin-bottom:2%">
 									Con respecto a la asignatura <b>{{subject}}</b>, seleccione:
 							</div>

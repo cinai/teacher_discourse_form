@@ -158,28 +158,33 @@ def get_skills(request,form_id,user):
             return HttpResponseRedirect(reverse('discourse_form:question_3', kwargs={'form_id':form_id,'user':user}))
         else:
             print("ERROR")
-            for form_2 in the_forms:
-                if not form_2.is_valid():
-                    print(form_2.errors)
+            context = {}
+            context['subjects'] = {}
+            #for form_2 in the_forms:
+            #    if not form_2.is_valid():
+            #        print(form_2.errors)
                 # save skill
-
-    # if a GET (or any other method) we'll create a blank form
-    context = {}
-    context['subjects'] = {}
-    for ans_subject in subjects:
-        # send subject name and form
-        subject_name = ans_subject.subject.subject
-        # pre_fill
-        if Answered_skill.objects.filter(ans_form=ans_form).exists():
-            initial_skills = [x.skill.id for x in Answered_skill.objects.filter(ans_form=ans_form)]
-        else:
-            initial_skills = []
-        if Answered_axis.objects.filter(ans_form=ans_form).exists():
-            initial_axis = [x.axis.id for x in Answered_axis.objects.filter(ans_form=ans_form)]
-        else:
-            initial_axis = []
-        form_2 = AfterSubjectForm(subject=ans_subject,grade_session=grade_session,prefix=subject_name,initial_skills=initial_skills,initial_axis=initial_axis)
-        context['subjects'][subject_name] = form_2            
+            for i,ans_subject in enumerate(subjects):
+                subject_name = ans_subject.subject.subject
+                context['subjects'][subject_name] = the_forms[i]
+    else:
+        # if a GET (or any other method) we'll create a blank form
+        context = {}
+        context['subjects'] = {}
+        for ans_subject in subjects:
+            # send subject name and form
+            subject_name = ans_subject.subject.subject
+            # pre_fill
+            if Answered_skill.objects.filter(ans_form=ans_form).exists():
+                initial_skills = [x.skill.id for x in Answered_skill.objects.filter(ans_form=ans_form)]
+            else:
+                initial_skills = []
+            if Answered_axis.objects.filter(ans_form=ans_form).exists():
+                initial_axis = [x.axis.id for x in Answered_axis.objects.filter(ans_form=ans_form)]
+            else:
+                initial_axis = []
+            form_2 = AfterSubjectForm(subject=ans_subject,grade_session=grade_session,prefix=subject_name,initial_skills=initial_skills,initial_axis=initial_axis)
+            context['subjects'][subject_name] = form_2            
     text = d_form.text
     context['text'] = text
     context['user_m'] = user
