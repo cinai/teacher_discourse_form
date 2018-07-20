@@ -51,6 +51,11 @@
             <form action="" method="post">
             <table>
     		{% csrf_token %}
+        {% if form.errors %}
+        <script>
+            alert('Es necesario que seleccione al menos una opción por pregunta');
+        </script>
+        {% endif %}
     		{% for subject, form in subjects.items %}
 				<tr>
 					<td>
