@@ -284,8 +284,8 @@ def statistics(request,form_id):
     d_form = Discourse_form.objects.get(id=form_id)
     answers = Form_answer.objects.filter(form=d_form)
     context = {}
+    context['sesion'] = str(d_form.session.grade)+' - '+d_form.session.content
     context['users_answers'] = []
-
     for answer in answers:
         a_dict = {}
         a_dict['user'] = answer.user

@@ -18,43 +18,48 @@
     <link rel="stylesheet" type="text/css" href="{% static "css/main.css" %}">
   </head>
 
-  <body class="bg-light">
-    <div class="container-contact100">
-      <div class="wrap-contact100">
-        <div class="row" style="margin-bottom:5%">
-          <div class="col-md-12 ">
-          <span class="">
-            
-            <table data-toggle="table" data-sort-order="desc"> 
-              <thead> 
-                <tr> 
-                  <th data-field="name" data-sortable="true"> Usuario </th> 
-                  <th data-field="check" data-sortable="true"> Completado </th>
-                  <th data-field="copus_code" data-sortable="true"> Copus </th> 
-                  <th data-field="forks_count" data-sortable="true"> Asignatura </th> 
-                  <th data-field="description1" data-sortable="true"> Habilidades </th>
-                  <th data-field="description2" data-sortable="true"> Ejes </th>
-                  <th data-field="description3" data-sortable="true"> OAs </th> 
-                </tr>
-              </thead>
-              <tbody>
-                {% for users_answer in users_answers %}
-                <tr> 
-                  <td>{{ users_answer.user }}</td>
-                  <td>{{ users_answer.done }}</td>
-                  <td>{{ users_answer.copus_code }}</td>
-                  <td>{{ users_answer.subject }}</td>
-                  <td>{{ users_answer.skill }}</td>
-                  <td>{{ users_answer.axis }}</td>
-                  <td>{{ users_answer.oas }}</td>
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          </span>
+  <body>
+    <div class="container-contact10">
+    <div class="row" style="margin-bottom:5%">
+      <div class="col-md-12 ">
+      <div class="panel panel-primary">
+  <!-- Default panel contents -->
+  <div class="panel-heading">Respuestas sesión: {{ sesion }}</div>
+  <div class="panel-body">
+    <table data-toggle="table" data-sort-order="desc"> 
+      <thead> 
+        <tr> 
+          <th data-field="name" data-sortable="true"> Usuario </th> 
+          <th data-field="check" data-sortable="true" style="text-align:center"> Ok </th>
+          <th data-field="copus_code" data-sortable="true"> Copus </th> 
+          <th data-field="forks_count" data-sortable="true"> Asignatura </th> 
+          <th data-field="description1" data-sortable="true"> Habilidades </th>
+          <th data-field="description2" data-sortable="true"> Ejes </th>
+          <th data-field="description3" data-sortable="true"> OAs </th> 
+        </tr>
+      </thead>
+      <tbody>
+        {% for users_answer in users_answers %}
+        <tr> 
+          <td>{{ users_answer.user }}</td>
+          <td style="text-align:center"> 
+            {% if users_answer.done %}
+              <span class="glyphicon glyphicon-ok green"></span>
+            {% else %}
+              <span class="glyphicon glyphicon-remove red"></span>
+          {% endif %}
+          </td>
+          <td>{{ users_answer.copus_code }}</td>
+          <td>{{ users_answer.subject }}</td>
+          <td>{{ users_answer.skill }}</td>
+          <td>{{ users_answer.axis }}</td>
+          <td>{{ users_answer.oas }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
           </div>
-        </div>
-      </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="{% static "bootstrap-table-1.12.1/src/bootstrap-table.js" %}"></script>

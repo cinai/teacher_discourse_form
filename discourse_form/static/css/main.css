@@ -169,7 +169,12 @@ iframe {
 	max-width: 1200px;
 }
 
-
+.red {
+    color: red;
+}
+.green {
+    color: green;
+}
 /*//////////////////////////////////////////////////////////////////
 [ Utility ]*/
 
@@ -179,7 +184,15 @@ iframe {
 
 /*//////////////////////////////////////////////////////////////////
 [ Contact ]*/
-
+.container-contact10 {
+  width: 100%;  
+  min-height: 100vh;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  background: #f1f7fa;
+  
+}
 .container-contact100 {
   width: 100%;  
   min-height: 100vh;
