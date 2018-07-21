@@ -49,11 +49,41 @@
               <span class="glyphicon glyphicon-remove red"></span>
           {% endif %}
           </td>
-          <td>{{ users_answer.copus_code }}</td>
-          <td>{{ users_answer.subject }}</td>
-          <td>{{ users_answer.skill }}</td>
-          <td>{{ users_answer.axis }}</td>
-          <td>{{ users_answer.oas }}</td>
+          <td>
+            <ul>
+            {% for code in users_answer.copus_code %}
+              <li> - {{ code }}</li>
+            {% endfor %}
+            <ul>
+          </td>
+          <td>
+            <ul>
+            {% for subject in users_answer.subject %}
+              <li> - {{ subject }}</li>
+            {% endfor %}
+            <ul>
+          </td>
+          <td>            
+            <ul>
+            {% for skill in users_answer.skill %}
+              <li> - {{ skill }}</li>
+            {% endfor %}
+            <ul>
+          </td>
+          <td>
+            <ul>
+            {% for axis in users_answer.axis %}
+              <li> - {{ axis }}</li>
+            {% endfor %}
+            <ul>
+          </td>
+          <td>            
+            <ul>
+            {% for oa in users_answer.oas %}
+              <li> - {{ oa }}</li>
+            {% endfor %}
+            <ul>
+          </td>
         </tr>
         {% endfor %}
       </tbody>
