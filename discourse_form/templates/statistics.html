@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    {% load static %}
+    <title>Discurso docente</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static "vendor/bootstrap/css/bootstrap.min.css" %}">
+    <link href="{% static "bootstrap-table-1.12.1/src/bootstrap-table.css" %}" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="{% static "fonts/font-awesome-4.7.0/css/font-awesome.min.css" %}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static "fonts/iconic/css/material-design-iconic-font.min.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/util.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/main.css" %}">
+  </head>
+
+  <body class="bg-light">
+    <div class="container-contact100">
+      <div class="wrap-contact100">
+        <div class="row" style="margin-bottom:5%">
+          <div class="col-md-12 ">
+          <span class="">
+            
+            <table data-toggle="table" data-sort-order="desc"> 
+              <thead> 
+                <tr> 
+                  <th data-field="name" data-sortable="true"> Usuario </th> 
+                  <th data-field="check" data-sortable="true"> Completado </th>
+                  <th data-field="copus_code" data-sortable="true"> Copus </th> 
+                  <th data-field="forks_count" data-sortable="true"> Asignatura </th> 
+                  <th data-field="description1" data-sortable="true"> Habilidades </th>
+                  <th data-field="description2" data-sortable="true"> Ejes </th>
+                  <th data-field="description3" data-sortable="true"> OAs </th> 
+                </tr>
+              </thead>
+              <tbody>
+                {% for users_answer in users_answers %}
+                <tr> 
+                  <td>{{ users_answer.user }}</td>
+                  <td>{{ users_answer.done }}</td>
+                  <td>{{ users_answer.copus_code }}</td>
+                  <td>{{ users_answer.subject }}</td>
+                  <td>{{ users_answer.skill }}</td>
+                  <td>{{ users_answer.axis }}</td>
+                  <td>{{ users_answer.oas }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="{% static "bootstrap-table-1.12.1/src/bootstrap-table.js" %}"></script>
+  </body>
+</html>

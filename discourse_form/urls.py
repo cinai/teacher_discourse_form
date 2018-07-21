@@ -6,6 +6,7 @@ app_name = 'discourse_form'
 
 urlpatterns = [
     path('', views.index, name='index'),
+    path('statistics/<int:form_id>/', views.statistics, name='statistics'),
     path('test/<int:form_id>/', views.get_answers_2, name='test'),
     path('encuesta/<int:form_id>/', views.get_answers, name='encuesta'),
     path('encuesta/<int:form_id>/objetivo_de_aprendizaje/<str:user>', views.get_learning_goals, name='question_3'),

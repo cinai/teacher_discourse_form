@@ -279,3 +279,33 @@ def stupid(request):
     return HttpResponseNotFound('<h1>Página no encontrada por la amargura de algunos</h1>')
 def yachao(request):
     return render(request, 'chao.html')
+
+def statistics(request,form_id):
+    d_form = Discourse_form.objects.get(id=form_id)
+    answers = Form_answer.objects.filter(form=d_form)
+    context = {}
+    context['users_answers'] = []
+
+    for answer in answers:
+        a_dict = {}
+        a_dict['user'] = answer.user
+        a_dict['done'] = answer.done
+        a_dict['subject'] = []
+        for ans_subject in Answered_subject.objects.filter(ans_form=answer):
+            a_dict['subject'].append(ans_subject.subject.subject)
+        a_dict['copus_code'] = []
+        for ans_copus_code in Answered_copus_code.objects.filter(ans_form=answer):
+            a_dict['copus_code'].append(ans_copus_code.copus_code.code)
+        a_dict['skill'] = []
+        for ans_skill in Answered_skill.objects.filter(ans_form=answer):
+            a_dict['skill'].append(ans_skill.skill.skill)
+        a_dict['axis'] = []
+        for ans_axis in Answered_axis.objects.filter(ans_form=answer):
+            a_dict['axis'].append(ans_axis.axis.axis)
+        a_dict['oas'] = []
+        for ans_oa in Answered_learning_goal.objects.filter(ans_form=answer):
+            a_dict['oas'].append(ans_oa.goal.goal_name)
+        context['users_answers'].append(a_dict)
+
+        a_dict['oas'] = []
+    return render(request, 'statistics.html', context)
