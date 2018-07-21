@@ -307,5 +307,4 @@ def statistics(request,form_id):
             a_dict['oas'].append(ans_oa.goal.goal_name)
         context['users_answers'].append(a_dict)
 
-        a_dict['oas'] = []
     return render(request, 'statistics.html', context)
