@@ -280,7 +280,7 @@ def stupid(request):
 def yachao(request):
     return render(request, 'chao.html')
 
-def statistics(request,form_id):
+def answers(request,form_id):
     d_form = Discourse_form.objects.get(id=form_id)
     answers = Form_answer.objects.filter(form=d_form)
     context = {}
@@ -307,4 +307,4 @@ def statistics(request,form_id):
             a_dict['oas'].append(ans_oa.goal.goal_name)
         context['users_answers'].append(a_dict)
 
-    return render(request, 'statistics.html', context)
+    return render(request, 'respuestas.html', context)

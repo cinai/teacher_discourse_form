@@ -8,3 +8,8 @@ teacher_discourse_form/settings.py
 discourse_form/__pycache__
 teacher_discourse_form/__pycache__
 sessions_coding/__pycache__
+discourse_form/static/bootstrap-table-1.12.1
+*.json
+assets/
+js/
+discourse_form/static/fonts/gly*
