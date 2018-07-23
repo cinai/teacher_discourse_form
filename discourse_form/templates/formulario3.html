@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="../../../../favicon.ico">
     {% load static %}
     <title>Discurso docente</title>
 
@@ -68,6 +67,7 @@
 						<div class="form-group" style="margin-bottom:5%">
                   			<label class="label-spec" for="id_skill">Los objetivos de aprendizaje que el docente promueve en la sesión:</label>
                   			{{ form.goal}}
+                        {{ form.dummy_goal }} <b>Ninguna de las anteriores</b>
               			</div>
 					</td>
 				</tr>
@@ -91,7 +91,7 @@
         </div>
           <div class="col-md-4 order-md-2">
           <div class="container-contact100-form-btn">
-            <button type="submit" class="contact100-form-btn">
+            <button type="submit" class="contact100-form-btn"  onclick="return validateForm()">
               <span>
                 Enviar
                 <i class="fa fa-long-arrow-right m-l-7" aria-hidden="true"></i>
@@ -133,26 +133,30 @@
   <script src="{% static "vendor/bootstrap/js/bootstrap.min.js" %}"></script>
 <!--===============================================================================================-->
   <script src="{% static "vendor/select2/select2.min.js" %}"></script>
+  {% for axe, form in axis.items %}
   <script>
-    $(".js-select2").each(function(){
-      $(this).select2({
-        minimumResultsForSearch: 20,
-        dropdownParent: $(this).next('.dropDownSelect2')
-      });
-
-
-      $(".js-select2").each(function(){
-        $(this).on('select2:close', function (e){
-          if($(this).val() == "Please chooses") {
-            $('.js-show-service').slideUp();
+    $('[id^="id_{{ axe }}-dummy_goal"]').on('change', function() {
+      $('[id^="id_{{ axe }}-goal"]').prop('checked', false);  
+    });
+    $('[id^="id_{{ axe }}-goal"]').on('change', function() {
+      $('[id^="id_{{ axe }}-dummy_goal"]').prop('checked', false);  
+    });
+  </script>
+  {% endfor %}
+  <script>
+    function validateForm(id) {
+      {% for axe, form in axis.items %}
+      var checkk = $('[id^="id_{{ axe }}-goal"]');
+      var checkedOne = Array.prototype.slice.call(checkk).some(x => x.checked);
+        if (checkedOne == false){
+          if ($('[id^="id_{{ axe }}-dummy_goal"]').prop('checked') == false){
+            alert("Por favor seleccione al menos un objetivo de aprendizaje para el eje {{ axe }}");
+            return false;
           }
-          else {
-            $('.js-show-service').slideUp();
-            $('.js-show-service').slideDown();
-          }
-        });
-      });
-    })
+      }
+      {% endfor %}
+      return true;
+    }
   </script>
 <!--===============================================================================================-->
   <script src="{% static "js/main.js" %}"></script>

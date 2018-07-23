@@ -79,6 +79,7 @@
                     {% for field in form.skill %}
                       <li>{{ field }}</li>
                     {% endfor %}
+                    <li>{{ form.dummy_skill }} <b>Ninguna de las anteriores</b></li>
                   </ul>
                 </div>
                 {% else %}
@@ -88,6 +89,7 @@
                       {% ifequal forloop.counter0|modulo:6 0 %}</ul></div><div class="col-md-4"><ul>{% endifequal %}
                       <li>{{ field }}</li>
                     {% endfor %}
+                     <li>{{ form.dummy_skill }} <b>Ninguna de las anteriores</b></li>
                   </ul>
                 </div>
                 {% endif %}
@@ -110,6 +112,7 @@
               <div class="col-md-11" style="margin-bottom:2%">
               <label class="label-spec" for="id_axis" style="margin-bottom:1%"">Los <b>ejes</b> que el docente promueve en la sesión:</label>
               {{ form.axis}}
+              {{ form.dummy_axis }} <b>Ninguna de las anteriores</b>
               </div>
               {% endifequal %}
             </div>
@@ -140,7 +143,7 @@
         </div>
           <div class="col-md-4 order-md-2">
           <div class="container-contact100-form-btn">
-            <button type="submit" class="contact100-form-btn">
+            <button type="submit" class="contact100-form-btn" onclick="return validateForm()">
               <span>
                 Siguiente
                 <i class="fa fa-long-arrow-right m-l-7" aria-hidden="true"></i>
@@ -183,26 +186,45 @@
 <!--===============================================================================================-->
   <script src="{% static "vendor/select2/select2.min.js" %}"></script>
   <script>
-    $(".js-select2").each(function(){
-      $(this).select2({
-        minimumResultsForSearch: 20,
-        dropdownParent: $(this).next('.dropDownSelect2')
-      });
+    {% for subject, form in subjects.items %}
 
+    $('[id^="id_{{ subject }}-dummy_skill"]').on('change', function() {
+      $('[id^="id_{{ subject }}-skill_"]').prop('checked', false);  
+    });
+    $('[id^="id_{{ subject }}-skill_"]').on('change', function() {
+      $('[id^="id_{{ subject }}-dummy_skill"]').prop('checked', false);  
+    });
+    $('[id^="id_{{ subject }}-dummy_axis"]').on('change', function() {
+      $('[id^="id_{{ subject }}-axis_"]').prop('checked', false);  
+    });
+    $('[id^="id_{{ subject }}-axis_"]').on('change', function() {
+      $('[id^="id_{{ subject }}-dummy_axis"]').prop('checked', false);  
+    });
+    {% endfor %}
+    function validateForm(id) {
+      {% for subject, form in subjects.items %}
 
-      $(".js-select2").each(function(){
-        $(this).on('select2:close', function (e){
-          if($(this).val() == "Please chooses") {
-            $('.js-show-service').slideUp();
+        var checkk = $('[id^="id_{{ subject }}-skill"]');
+        var checkedOne = Array.prototype.slice.call(checkk).some(x => x.checked);
+        if (checkedOne == false){
+          if ($('[id^="id_{{ subject }}-dummy_skill"]').prop('checked') == false){
+            alert("Por favor seleccione al menos una habilidad para la asignatura {{ subject }}");
+            return false;
           }
-          else {
-            $('.js-show-service').slideUp();
-            $('.js-show-service').slideDown();
+        }
+        var checkk = $('[id^="id_{{ subject }}-axis"]');
+        var checkedOne = Array.prototype.slice.call(checkk).some(x => x.checked);
+        if (checkedOne == false){
+          if ($('[id^="id_{{ subject }}-dummy_axis"]').prop('checked') == false){
+            alert("Por favor seleccione al menos un eje para la asignatura {{ subject }}");
+            return false;
           }
-        });
-      });
-    })
+        }
+      {% endfor %}
+      return true;
+    }
   </script>
+
 <!--===============================================================================================-->
   <script src="{% static "js/main.js" %}"></script>
   </body>

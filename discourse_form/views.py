@@ -44,39 +44,7 @@ def clean_spaces(a_list):
 def get_answers_2(request,form_id):
     d_form = Discourse_form.objects.get(id=form_id)
     text = d_form.text
-    if request.method == 'POST':
-        form = TeacherDiscourseForm(request.POST)
-        if form.is_valid():
-            # save form answer
-            email = form.cleaned_data['email']
-            ans_form,created = Form_answer.objects.get_or_create(form=d_form,user=email)
-            if created:
-                ans_form.save()
-            else:
-                # delete all subjects related to ans_form
-                Answered_subject.objects.filter(ans_form=ans_form).delete() 
-                # delete all copus code with this stuff
-                Answered_copus_code.objects.filter(ans_form=ans_form).delete()
-                # 
-                ans_form.done = False
-                ans_form.save()
-            # save subject
-            subject = form.cleaned_data['subject']
-            for s in subject:
-                ans_sub = Answered_subject(ans_form=ans_form,subject=s)
-                ans_sub.save()
-            # save copus codes
-            copus_codes = form.cleaned_data['copus_code']
-            for code in copus_codes:
-                ans_copus = Answered_copus_code(ans_form=ans_form,copus_code=code)
-                ans_copus.save()
-            # redirect to next form
-            crypted_mail = signing.dumps(email)
-            return HttpResponseRedirect(reverse('discourse_form:question_2', kwargs={'form_id':form_id,'user':crypted_mail}))
-    # if a GET (or any other method) we'll create a blank form
-    else:
-        form = TeacherDiscourseForm()
-
+    form = TeacherDiscourseForm()
     return render(request, 'test.html', {'form': form,'text':text,'form_id':form_id})#[x if x!=" " else "-" for x in text.splitlines()]})
 
 def get_answers(request,form_id):
@@ -105,6 +73,7 @@ def get_answers(request,form_id):
                 ans_sub.save()
             # save copus codes
             copus_codes = form.cleaned_data['copus_code']
+            print(copus_codes)
             for code in copus_codes:
                 ans_copus = Answered_copus_code(ans_form=ans_form,copus_code=code)
                 ans_copus.save()
@@ -165,6 +134,7 @@ def get_skills(request,form_id,user):
             if Answered_axis.objects.filter(ans_form=ans_form).exists():
                 Answered_axis.objects.filter(ans_form=ans_form).delete()
             # save the new answers
+            counter_axis = 0
             for form_2 in the_forms:
                 # save skill
                 skills = form_2.cleaned_data['skill']
@@ -176,16 +146,18 @@ def get_skills(request,form_id,user):
                 for axe in axis:
                     ans_axe = Answered_axis(ans_form=ans_form,axis=axe)
                     ans_axe.save()
+                    counter_axis += 1
             # redirect to next form
-            return HttpResponseRedirect(reverse('discourse_form:question_3', kwargs={'form_id':form_id,'user':user}))
+            if counter_axis > 0:
+                return HttpResponseRedirect(reverse('discourse_form:question_3', kwargs={'form_id':form_id,'user':user}))
+            else:
+                if Answered_learning_goal.objects.filter(ans_form=ans_form).exists():
+                    Answered_learning_goal.objects.filter(ans_form=ans_form).delete()
+                return HttpResponseRedirect(reverse('discourse_form:thanks'))
         else:
             print("ERROR")
             context = {}
             context['subjects'] = {}
-            #for form_2 in the_forms:
-            #    if not form_2.is_valid():
-            #        print(form_2.errors)
-                # save skill
             for i,ans_subject in enumerate(subjects):
                 subject_name = ans_subject.subject.subject
                 context['subjects'][subject_name] = the_forms[i]
