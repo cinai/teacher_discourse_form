@@ -73,7 +73,6 @@ def get_answers(request,form_id):
                 ans_sub.save()
             # save copus codes
             copus_codes = form.cleaned_data['copus_code']
-            print(copus_codes)
             for code in copus_codes:
                 ans_copus = Answered_copus_code(ans_form=ans_form,copus_code=code)
                 ans_copus.save()

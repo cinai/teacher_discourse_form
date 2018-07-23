@@ -15,7 +15,16 @@ class TeacherDiscourseForm(forms.Form):
         self.fields['subject'].initial = initial_subjects
         self.fields['email'].initial = initial_email
         self.fields['copus_code'].initial = initial_cc
-
+    
+    def is_valid(self):
+        valid = super(TeacherDiscourseForm, self).is_valid()
+        if not valid:
+            return valid
+        copus_codes = self.cleaned_data['copus_code']
+        if len(copus_codes) == 0:
+            dummy_cc = self.cleaned_data['dummy_copus_code']
+            return dummy_cc
+        return True
 class AfterSubjectForm(forms.Form):
     skill = forms.ModelMultipleChoiceField(queryset=None,required=False, widget=forms.CheckboxSelectMultiple())
     dummy_skill = forms.BooleanField(required=False)
@@ -31,6 +40,24 @@ class AfterSubjectForm(forms.Form):
         self.fields['axis'].queryset = Axis.objects.filter(subject=answered_subject.subject,grade=grade_session)
         self.fields['skill'].initial = initial_skills
         self.fields['axis'].initial = initial_axis
+        #if initial_skills == []:
+         #   self.fields['dummy_skill'].initial = True
+       # if initial_axis == []:
+         #   self.fields['dummy_axis'].initial = True
+    def is_valid(self):
+        valid = super(AfterSubjectForm, self).is_valid()
+        if not valid:
+            return valid
+        #skills = self.cleaned_data['skill']
+       # if len(skills) == 0:
+        #    dummy_s = self.cleaned_data['dummy_skill']
+        #    if dummy_s == False:
+        #        return False
+        #axis = self.cleaned_data['axis']
+        #if len(axis) == 0:
+        #    dummy_a = self.cleaned_data['dummy_axis']
+        #    return dummy_a
+        return True
 
 class AfterAxisForm(forms.Form):
     goal = forms.ModelMultipleChoiceField(queryset=None,required=False, widget=forms.CheckboxSelectMultiple())
@@ -41,3 +68,13 @@ class AfterAxisForm(forms.Form):
         super().__init__(*args, **kwargs)
         self.fields['goal'].queryset = Learning_goal.objects.filter(axis=answered_axis.axis)
         self.fields['goal'].initial = initial_goals
+
+    def is_valid(self):
+        valid = super(AfterAxisForm, self).is_valid()
+        if not valid:
+            return valid
+        #goals = self.cleaned_data['goal']
+        #if len(goals) == 0:
+        #    dummy_g = self.cleaned_data['dummy_goal']
+        #    return dummy_g
+        return True
