@@ -48,7 +48,7 @@ class Skill(models.Model):
         return self.skill
 
 class Learning_goal(models.Model):
-    goal_name = models.CharField(max_length=100)
+    goal_name = models.TextField()
     long_name = models.TextField()
     axis = models.ForeignKey(Axis,on_delete=models.CASCADE)
     def __str__(self):

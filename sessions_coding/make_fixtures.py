@@ -79,7 +79,7 @@ for i,row in df_oa.iterrows():
 	# add oa
 	desccorta = row.desccorta
 	if desccorta != desccorta:
-		desccorta = row.desclarga[:100]
+		desccorta = row.desclarga
 	a_dict = {'model':'sessions_coding.learning_goal','pk':row.id,'fields':{'goal_name':desccorta,'long_name':row.desclarga,'axis':dict_axis[super_key]}}
 	les_dict.append(a_dict)
 
