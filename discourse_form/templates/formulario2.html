@@ -71,7 +71,7 @@
             {% if form.skill|length > 0 %}
             <div class="form-group" style="margin-top:2%;margin-bottom:5%">
               <div class="col-md-11" style="margin-bottom:1%">
-              <label class="label-spec" for="id_skill">Las <b>habilidades</b> presentes en la sesión:</label>
+              <label class="label-spec" for="id_skill">Las <b>habilidades</b> que el docente promueve en la sesión:</label>
               </div>
                 {% if form.skill|length < 7 %}
                 <div class="col-md-11">
@@ -108,7 +108,7 @@
               </script>
               {% else %}
               <div class="col-md-11" style="margin-bottom:2%">
-              <label class="label-spec" for="id_axis" style="margin-bottom:1%"">Los <b>ejes</b> presentes en la sesión:</label>
+              <label class="label-spec" for="id_axis" style="margin-bottom:1%"">Los <b>ejes</b> que el docente promueve en la sesión:</label>
               {{ form.axis}}
               </div>
               {% endifequal %}
