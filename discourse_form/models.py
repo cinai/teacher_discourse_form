@@ -47,3 +47,10 @@ class Answered_copus_code(models.Model):
     ans_form = models.ForeignKey(Form_answer, on_delete=models.CASCADE)
     def __str__(self):
         return str(self.copus_code)
+
+class Answered_axis_phrases(models.Model):
+    axis = models.ForeignKey(Answered_axis,on_delete=models.CASCADE)
+    ans_form = models.ForeignKey(Form_answer, on_delete=models.CASCADE)
+    phrases = models.TextField()
+    def __str__(self):
+        return str(self.axis)

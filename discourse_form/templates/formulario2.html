@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="../../../../favicon.ico">
     {% load static %}
     {% load my_tags %}
 
@@ -77,7 +76,29 @@
                 <div class="col-md-11">
                   <ul>
                     {% for field in form.skill %}
-                      <li>{{ field }}</li>
+                      <li>{{ field }}
+                        <button type="button" data-toggle="modal" data-target="#myModal_{{ field.id_for_label}}" id="span_{{ field.id_for_label}}"  style="display:none"><span  class="glyphicon glyphicon-th-list" ></span></button>
+                        <!-- Modal -->
+                          <div class="modal fade in" id="myModal_{{ field.id_for_label}}" role="dialog">
+                            <div class="modal-dialog">
+                            
+                              <!-- Modal content-->
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                  <h4 class="modal-title">Seleccione las líneas del fragmento que se relacionan con {{ field.fieldname }}</h4>
+                                </div>
+                                <div class="modal-body">
+                                  <p>Some text in the modal.</p>
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                              </div>
+                              
+                            </div>
+                          </div>
+                      </li>
                     {% endfor %}
                     <li>{{ form.dummy_skill }} <b>Ninguna de las anteriores</b></li>
                   </ul>
@@ -87,7 +108,30 @@
                   <ul>
                     {% for field in form.skill %}
                       {% ifequal forloop.counter0|modulo:6 0 %}</ul></div><div class="col-md-4"><ul>{% endifequal %}
-                      <li>{{ field }}</li>
+                      <li>{{ field }}
+                        <button type="button" data-toggle="modal" data-target="#myModal_{{ field.id_for_label}}" id="span_{{ field.id_for_label}}"  style="display:none"><span  class="glyphicon glyphicon-th-list" ></span></button>
+                        <!-- Modal -->
+                          <div class="modal fade" id="myModal_{{ field.id_for_label}}" role="dialog">
+                            <div class="modal-dialog">
+                            
+                              <!-- Modal content-->
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                  <h4 class="modal-title">Modal Header</h4>
+                                </div>
+                                <div class="modal-body">
+                                  <p>Some text in the modal.</p>
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                              </div>
+                              
+                            </div>
+                          </div>
+                        
+                      </li>
                     {% endfor %}
                      <li>{{ form.dummy_skill }} <b>Ninguna de las anteriores</b></li>
                   </ul>
@@ -172,19 +216,13 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script>window.jQuery || document.write('<script src="../../../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
-     <!-- <script src="../../../assets/js/vendor/popper.min.js"></script> -->
-    
     <!--===============================================================================================-->
   <script src="{% static "vendor/jquery/jquery-3.2.1.min.js" %}"></script>
 <!--===============================================================================================-->
-  <script src="{% static "vendor/animsition/js/animsition.min.js" %}"></script>
 <!--===============================================================================================-->
   <script src="{% static "vendor/bootstrap/js/popper.js" %}"></script>
   <script src="{% static "vendor/bootstrap/js/bootstrap.min.js" %}"></script>
 <!--===============================================================================================-->
-  <script src="{% static "vendor/select2/select2.min.js" %}"></script>
   <script>
     {% for subject, form in subjects.items %}
 
@@ -192,6 +230,13 @@
       $('[id^="id_{{ subject }}-skill_"]').prop('checked', false);  
     });
     $('[id^="id_{{ subject }}-skill_"]').on('change', function() {
+      if (this.checked){
+        $('#span_'+this.id).show();
+      }
+      else{
+        $('#span_'+this.id).hide();
+      }
+      // add element glyphicon glyphicon-th-list to span
       $('[id^="id_{{ subject }}-dummy_skill"]').prop('checked', false);  
     });
     $('[id^="id_{{ subject }}-dummy_axis"]').on('change', function() {
@@ -223,6 +268,12 @@
       {% endfor %}
       return true;
     }
+    $(document).ready(function(){
+      $('[id^="span_id_"]').click(function(){
+          console.log("#myModal"+this.id.substring(4));
+            $("#myModal"+this.id.substring(4)).modal();
+          });
+      });
   </script>
 
 <!--===============================================================================================-->

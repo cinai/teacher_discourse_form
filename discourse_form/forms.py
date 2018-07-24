@@ -78,3 +78,10 @@ class AfterAxisForm(forms.Form):
         #    dummy_g = self.cleaned_data['dummy_goal']
         #    return dummy_g
         return True
+
+class selectLines(forms.Form):
+    phrases = forms.MultipleChoiceField(required=False, widget=forms.CheckboxSelectMultiple())
+    def __init__(self, *args, **kwargs):
+        load_phrases = kwargs.pop('load_phrases', None)
+        super().__init__(*args, **kwargs)
+        self.fields['phrases'].choices = load_phrases
