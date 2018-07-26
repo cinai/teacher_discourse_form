@@ -67,7 +67,7 @@
                     {% for field in form.skill.field.choices %}
                       <li>
                         <label for="id_{{subject}}-skill_{{field.0}}"><input type="checkbox" name="{{subject}}-skill" value="{{field.0}}" id="id_{{subject}}-skill_{{field.0}}" {% if field.0 in form.skill.initial %} checked{% endif %}> {{field.1}}</label>
-                        <button type="button" id="span_id_{{subject}}-skill_{{field.0}}"  style="display:none"><span  class="glyphicon glyphicon-th-list" ></span></button>
+                        <button type="button" id="span_id_{{subject}}-skill_{{field.0}}"  {% if field.0 in form.skill.initial %} style="" {%else%} style="display:none" {% endif %} ><span  class="glyphicon glyphicon-pencil" ></span></button>
                         <!-- Modal -->
                           <div class="modal fade in bd-example-modal-lg" id="myModal_id_{{subject}}-skill_{{field.0}}" role="dialog">
                             <div class="modal-dialog modal-lg vertical-align-center">
@@ -102,7 +102,7 @@
                       {% ifequal forloop.counter0|modulo:6 0 %}</ul></div><div class="col-md-4"><ul>{% endifequal %}
                       <li>
                          <label for="id_{{subject}}-skill_{{field.0}}"><input type="checkbox" name="{{subject}}-skill" value="{{field.0}}" id="id_{{subject}}-skill_{{field.0}}" {% if field.0 in form.skill.initial %} checked{% endif %}> {{field.1}}</label>
-                        <button type="button" id="span_id_{{subject}}-skill_{{field.0}}" style="display:none"><span  class="glyphicon glyphicon-th-list" ></span></button>
+                        <button type="button" id="span_id_{{subject}}-skill_{{field.0}}" {% if field.0 in form.skill.initial %} style="" {%else%} style="display:none" {% endif %} ><span  class="glyphicon glyphicon-pencil" ></span></button>
                         <!-- Modal -->
                           <div class="modal fade in bd-example-modal-lg" id="myModal_id_{{subject}}-skill_{{field.0}}" role="dialog">
                             <div class="modal-dialog  modal-lg vertical-align-center">
@@ -116,12 +116,11 @@
                                 <div class="modal-body">
                                   <pre class="pre-scrollable " style='white-space:pre-wrap;word-break: keep-all;'>
 {% for line in text %}
-
-<label><input type="checkbox" name="input_id_{{subject}}-skill_{{field.0}}_{{ forloop.counter }}" value="{{ line }}"> {{ forloop.counter}}- {{ line }}</label>
+<label><input type="checkbox" name="input_id_{{subject}}-skill_{{field.0}}_{{ forloop.counter }}" value="{{ line }}" {% if forloop.counter in form_phrases|in_dict:field.0 %} checked {% endif %}> {{ forloop.counter}}- {{ line }}</label>
 {% endfor %}</pre>
                                 </div>
                                 <div class="modal-footer">
-                                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                  <button type="button" class="btn btn-default" data-dismiss="modal">Guardar</button>
                                 </div>
                               </div>
                               
@@ -208,7 +207,8 @@
     {% for subject, form in subjects.items %}
 
     $('[id^="id_{{ subject }}-dummy_skill"]').on('change', function() {
-      $('[id^="id_{{ subject }}-skill_"]').prop('checked', false);  
+      $('[id^="id_{{ subject }}-skill_"]').prop('checked', false);
+      $("[id^='span_id_{{ subject }}-skill_']").hide();
     });
     $("[id^='id_{{ subject }}-skill_']").on('change', function() {
       if (this.checked){
@@ -260,6 +260,7 @@
         });
 //data-toggle="modal" data-target="#myModal_{{ field.id_for_label}}" 
     });
+    console.log({{form_phrases}});
   </script>
 <!--===============================================================================================-->
   <script src="{% static "js/main.js" %}"></script>

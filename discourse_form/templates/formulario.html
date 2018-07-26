@@ -52,6 +52,12 @@
           </div>
           <div class="form-group" style="margin-bottom:5%">
             <div class="fieldWrapper">
+              <label class="label-spec" for="id_dialogic">El discurso docente tiene carácter:</label>
+              {{ form.dialogic }}
+            </div>
+          </div>
+          <div class="form-group" style="margin-bottom:5%">
+            <div class="fieldWrapper">
                 {% if form.copus_code.errors %}
                   {% if form.subject.errors %}
                   {% else %}

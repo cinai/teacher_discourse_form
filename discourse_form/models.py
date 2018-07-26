@@ -14,6 +14,7 @@ class Form_answer(models.Model):
     form = models.ForeignKey(Discourse_form, on_delete=models.CASCADE)
     ans_date = models.DateTimeField('date answered',auto_now_add=True, blank=True)
     user = models.EmailField()
+    dialogic = models.CharField(blank=True,default='NA',max_length=20)
     done = models.BooleanField(blank=True,default=False)
     def __str__(self):
         return self.form.artificial_name + '-' + str(self.ans_date)
@@ -58,6 +59,7 @@ class Answered_axis_phrases(models.Model):
 class Answered_skill_phrases(models.Model):
     skill = models.ForeignKey(Answered_skill,on_delete=models.CASCADE)
     ans_form = models.ForeignKey(Form_answer, on_delete=models.CASCADE)
+    code = models.IntegerField(default=0,blank=True)
     phrases = models.TextField()
     def __str__(self):
         return str(self.skill)

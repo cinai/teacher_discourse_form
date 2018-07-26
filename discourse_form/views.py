@@ -58,10 +58,13 @@ def get_answers(request,form_id):
         if form.is_valid():
             # save form answer
             email = form.cleaned_data['email']
+            dialogic = form.cleaned_data['dialogic']
             ans_form,created = Form_answer.objects.get_or_create(form=d_form,user=email)
             if created:
+                ans_form.dialogic = dialogic
                 ans_form.save()
             else:
+                ans_form.dialogic = dialogic
                 # delete all subjects related to ans_form
                 Answered_subject.objects.filter(ans_form=ans_form).delete() 
                 # delete all copus code with this stuff
@@ -95,6 +98,8 @@ def get_answers_back(request,form_id,user):
     ans_form = Form_answer.objects.get(form=d_form,user=mail)
     subjects = Answered_subject.objects.filter(ans_form=ans_form)
     grade_session = d_form.session.grade
+    text = d_form.text
+    clean_text = clean_spaces(text.splitlines())
     if request.method == 'POST':
         the_forms = [AfterSubjectForm(request.POST,subject=x,grade_session=grade_session,prefix=x.subject.subject) for x in subjects]
         # if there was a previous answer, delete it
@@ -110,14 +115,27 @@ def get_answers_back(request,form_id,user):
                 for skill in skills:
                     ans_skill = Answered_skill(ans_form=ans_form,skill=skill)
                     ans_skill.save()
-                # save axis
+                    skill_phrases_name = 'input_id_'+str(ans_skill.skill.subject)+'-skill_'+str(ans_skill.skill.pk)
+                    for key, value in request.POST.items():
+                        if key.startswith(skill_phrases_name):
+                            if type(value) == list:
+                                for element in value:
+                                    index_phrases = clean_text.index(element)+1
+                                    ans_phrases = Answered_skill_phrases(skill=ans_skill,ans_form=ans_form,phrases=element,code=index_phrases)
+                                    ans_phrases.save()
+                            else:
+                                index_phrases = clean_text.index(value)+1
+                                ans_phrases = Answered_skill_phrases(skill=ans_skill,ans_form=ans_form,phrases=value,code=index_phrases)
+                                ans_phrases.save()
+                # save axis1
                 axis = form_2.cleaned_data['axis']
                 for axe in axis:
                     ans_axe = Answered_axis(ans_form=ans_form,axis=axe)
                     ans_axe.save()
         initial_subjects = [x.subject.id for x in Answered_subject.objects.filter(ans_form=ans_form)]
         initial_cc = [x.copus_code.id for x in Answered_copus_code.objects.filter(ans_form=ans_form)]
-        form = TeacherDiscourseForm(initial_email=mail,initial_subjects=initial_subjects,initial_cc=initial_cc)
+        initial_dialogic = ans_form.dialogic
+        form = TeacherDiscourseForm(initial_email=mail,initial_subjects=initial_subjects,initial_cc=initial_cc,initial_dialogic=initial_dialogic)
         return render(request, 'formulario.html', {'form': form,'text':clean_spaces(text.splitlines()),'form_id':form_id})
     return HttpResponseNotFound('<h1>Page not found</h1>')
 
@@ -127,6 +145,8 @@ def get_skills(request,form_id,user):
     mail = signing.loads(user)
     ans_form = Form_answer.objects.get(form=d_form,user=mail)
     subjects = Answered_subject.objects.filter(ans_form=ans_form)
+    text = d_form.text
+    clean_text = clean_spaces(text.splitlines())
     if request.method == 'POST':
         the_forms = [AfterSubjectForm(request.POST,subject=x,grade_session=grade_session,prefix=x.subject.subject) for x in subjects]
         if all([form_2.is_valid() for form_2 in the_forms]):
@@ -144,17 +164,17 @@ def get_skills(request,form_id,user):
                     ans_skill = Answered_skill(ans_form=ans_form,skill=skill)
                     ans_skill.save()
                     skill_phrases_name = 'input_id_'+str(ans_skill.skill.subject)+'-skill_'+str(ans_skill.skill.pk)
-                    phrases = []
                     for key, value in request.POST.items():
                         if key.startswith(skill_phrases_name):
                             if type(value) == list:
                                 for element in value:
-                                    phrases.append(element)
+                                    index_phrases = clean_text.index(element)+1
+                                    ans_phrases = Answered_skill_phrases(skill=ans_skill,ans_form=ans_form,phrases=element,code=index_phrases)
+                                    ans_phrases.save()
                             else:
-                                phrases.append(value)
-                    if phrases != []:
-                        ans_phrases = Answered_skill_phrases(skill=ans_skill,ans_form=ans_form,phrases="\n".join(phrases))
-                        ans_phrases.save()
+                                index_phrases = clean_text.index(value)+1
+                                ans_phrases = Answered_skill_phrases(skill=ans_skill,ans_form=ans_form,phrases=value,code=index_phrases)
+                                ans_phrases.save()
                 # save axis1
                 axis = form_2.cleaned_data['axis']
                 for axe in axis:
@@ -184,17 +204,29 @@ def get_skills(request,form_id,user):
             subject_name = ans_subject.subject.subject
             # pre_fill
             if Answered_skill.objects.filter(ans_form=ans_form).exists():
-                initial_skills = [x.skill.id for x in Answered_skill.objects.filter(ans_form=ans_form)]
+                ans_skills =  Answered_skill.objects.filter(ans_form=ans_form)
+                initial_skills = [x.skill.id for x in ans_skills]
+                initial_phrases_skills = {}
+                for skill in ans_skills:
+                    ans_phrases = Answered_skill_phrases.objects.filter(ans_form=ans_form,skill=skill)
+                    if ans_phrases.exists():
+                        print("yei")
+                        skill_id = skill.skill.pk
+                        initial_phrases_skills[skill_id] = []
+                        for phrases in ans_phrases:
+                            initial_phrases_skills[skill_id].append(phrases.code)
             else:
                 initial_skills = []
+                initial_phrases_skills = {}
             if Answered_axis.objects.filter(ans_form=ans_form).exists():
                 initial_axis = [x.axis.id for x in Answered_axis.objects.filter(ans_form=ans_form)]
             else:
                 initial_axis = []
             form_2 = AfterSubjectForm(subject=ans_subject,grade_session=grade_session,prefix=subject_name,initial_skills=initial_skills,initial_axis=initial_axis)
-            context['subjects'][subject_name] = form_2            
-    text = d_form.text
-    context['text'] = clean_spaces(text.splitlines())
+            context['subjects'][subject_name] = form_2
+    print(initial_phrases_skills)
+    context['form_phrases'] = initial_phrases_skills            
+    context['text'] = clean_text
     context['user_m'] = user
     context['form_id'] = form_id
     return render(request, 'formulario2.html', context)

@@ -3,19 +3,25 @@ from django.db.models import Q
 from sessions_coding.models import Classroom_session,Subject,Axis,Skill,Learning_goal,Copus_code
 
 class TeacherDiscourseForm(forms.Form):
+    CHOICES = [('Autoritativo','Autoritativo'),
+            ('Dialogico','Dialógico'),
+            ('NA','Ninguna de las anteriores')]
     email = forms.EmailField(label='E-mail', max_length=100,widget=forms.EmailInput(attrs={'class': 'form-control','required':True,'placeholder':'Ingrese aquí su email'}))
     subject = forms.ModelMultipleChoiceField(queryset=Subject.objects.exclude(subject='Ninguna'), widget=forms.CheckboxSelectMultiple())
     copus_code = forms.ModelMultipleChoiceField(queryset=Copus_code.objects.all(),required=False, widget=forms.CheckboxSelectMultiple())#attrs={'class':'list-group'}))
     dummy_copus_code = forms.BooleanField(required=False)
+    dialogic = forms.ChoiceField(choices=CHOICES, widget=forms.RadioSelect())
     def __init__(self, *args, **kwargs):
         initial_subjects = kwargs.pop('initial_subjects', None)
         initial_email = kwargs.pop('initial_email', None)
         initial_cc = kwargs.pop('initial_cc', None) 
+        initial_dialogic = kwargs.pop('initial_dialogic', None)
         super().__init__(*args, **kwargs)
         self.fields['subject'].initial = initial_subjects
         self.fields['email'].initial = initial_email
         self.fields['copus_code'].initial = initial_cc
-    
+        self.fields['dialogic'].initial = initial_dialogic
+
     def is_valid(self):
         valid = super(TeacherDiscourseForm, self).is_valid()
         if not valid:

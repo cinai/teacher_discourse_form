@@ -13,3 +13,9 @@ def novacio(num):
     if num == "":
         return False
     return True
+
+@register.filter
+def in_dict(a_dict,skill):
+    if skill in a_dict:
+        return a_dict[skill]
+    return []
