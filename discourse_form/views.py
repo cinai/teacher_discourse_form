@@ -12,7 +12,10 @@ from .models import (
     Answered_axis,
     Answered_skill,
     Answered_learning_goal,
-    Answered_copus_code)
+    Answered_copus_code,
+    Answered_axis_phrases,
+    Answered_skill_phrases
+    )
 
 def index(request):
     return HttpResponse("Me parece sospechosa tu actitud")
@@ -140,11 +143,18 @@ def get_skills(request,form_id,user):
                 for skill in skills:
                     ans_skill = Answered_skill(ans_form=ans_form,skill=skill)
                     ans_skill.save()
-                    print("hiiii")
+                    skill_phrases_name = 'input_id_'+str(ans_skill.skill.subject)+'-skill_'+str(ans_skill.skill.pk)
+                    phrases = []
                     for key, value in request.POST.items():
-                        if key.startswith('input_id_'+str(ans_skill.skill.subject)+'_skill_'+str(ans_skill.skill.pk)):
-                            print(key)
-                        print('input_id_'+str(ans_skill.skill.subject)+'_skill_'+str(ans_skill.skill.pk))
+                        if key.startswith(skill_phrases_name):
+                            if type(value) == list:
+                                for element in value:
+                                    phrases.append(element)
+                            else:
+                                phrases.append(value)
+                    if phrases != []:
+                        ans_phrases = Answered_skill_phrases(skill=ans_skill,ans_form=ans_form,phrases="\n".join(phrases))
+                        ans_phrases.save()
                 # save axis1
                 axis = form_2.cleaned_data['axis']
                 for axe in axis:

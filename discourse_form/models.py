@@ -54,3 +54,10 @@ class Answered_axis_phrases(models.Model):
     phrases = models.TextField()
     def __str__(self):
         return str(self.axis)
+
+class Answered_skill_phrases(models.Model):
+    skill = models.ForeignKey(Answered_skill,on_delete=models.CASCADE)
+    ans_form = models.ForeignKey(Form_answer, on_delete=models.CASCADE)
+    phrases = models.TextField()
+    def __str__(self):
+        return str(self.skill)
