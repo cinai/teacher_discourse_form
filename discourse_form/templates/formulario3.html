@@ -1,13 +1,11 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
     {% load static %}
+    {% load my_tags %}
     <title>Discurso docente</title>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" type="text/css" href="{% static "vendor/bootstrap/css/bootstrap.min.css" %}">
     <link rel="stylesheet" type="text/css" href="{% static "fonts/font-awesome-4.7.0/css/font-awesome.min.css" %}">
@@ -15,68 +13,60 @@
     <link rel="stylesheet" type="text/css" href="{% static "fonts/iconic/css/material-design-iconic-font.min.css" %}">
     <link rel="stylesheet" type="text/css" href="{% static "css/util.css" %}">
     <link rel="stylesheet" type="text/css" href="{% static "css/main.css" %}">
-    <!-- Custom styles for this template 
-    <link href="form-validation.css" rel="stylesheet"> -->
-  </head>
+</head>
+<body class="">
+  <div class="container">
+    <span class="col-md-12"> <br><br></span>
+  <!--<div class="container">
 
-  <body class="bg-light">
-    <div class="container-contact100">
-      <div class="wrap-contact100">
-        <div class="row" style="margin-bottom:5%">
-          <div class="col-md-12 ">
-          <span class="">
-            <h1>Descripción del discurso docente - parte 3</h1>
-          </span>
+  <div class="page-header">
+      <h1>Discurso docente <small> Descripción de un fragmento de sesión</small></h1>
+  </div>
+  </div> -->
+  <!-- Survey - START -->
+    <div class="col-md-6">
+      <div class="panel panel-info">
+        <div class="panel-heading">
+          Fragmento de sesión a describir
         </div>
-      </div>
-      <div class="row">
-          <div class="col-md-12 order-md-1">
-          
-          <div class="panel panel-info">
-
-            <div class="panel-heading">
-              Fragmento de sesión a describir
-            </div>
-            <div class="panel-body">
-              <pre class="pre-scrollable " style='white-space:pre-wrap;word-break: keep-all;'>
+        <div class="panel-body">
+          <pre class="" style='overflow: auto;white-space:pre-wrap;word-break: keep-all; height:550px;'>
 {% for line in text %}
 {{ forloop.counter}}- {{ line }}
 {% endfor %}
-            <pre>
-              </div>
-          </div>
+          </pre>
         </div>
-        </div>
-        <div class="row">
-          <div class="col-md-1 order-md-2 mb-4">
-          </div>
-          <div class="col-md-11 order-md-1">
-            <form action="" method="post">
+      </div>
+    </div>
+    <div class="col-md-6" style="overflow: auto; height:650px;">
+      <div class="vertical-align">
+      <div class="col-md-11 order-md-1 ">
+                    <form action="" method="post">
             <table>
-    		{% csrf_token %}
-    		{% for axe, form in axis.items %}
-				<tr>
-					<td>
-							<div class="" style="margin-bottom:5%">
-									Con respecto al eje <b>{{ axe }}</b>, seleccione:
-							</div>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<div class="form-group" style="margin-bottom:5%">
-                  			<label class="label-spec" for="id_skill">Los objetivos de aprendizaje que el docente promueve en la sesión:</label>
-                  			{{ form.goal}}
+        {% csrf_token %}
+        {% for axe, form in axis.items %}
+        <tr>
+          <td>
+              <div class="" style="margin-bottom:5%">
+                  Con respecto al eje <b>{{ axe }}</b>, seleccione:
+              </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="form-group" style="margin-bottom:5%">
+                        <label class="label-spec" for="id_skill">Los objetivos de aprendizaje que el docente promueve en la sesión:</label>
+                        {{ form.goal}}
                         {{ form.dummy_goal }} <b>Ninguna de las anteriores</b>
-              			</div>
-					</td>
-				</tr>
+                    </div>
+          </td>
+        </tr>
       {% if form.goal.errors %}
         <script>alert('Es necesario que seleccione al menos una objetivo de aprendizaje');</script>
       {% endif %}
-			{% endfor %}
-			</table>
-      <div class="col-md-4 order-md-1">
+      {% endfor %}
+      </table>
+      <div class="col-md-5 order-md-1">
            <div class="container-contact100-form-btn">
             <button type="submit" class="contact100-form-btn-l" formaction={% url 'discourse_form:question_2_back' form_id user_m %}>
               <span>
@@ -87,9 +77,9 @@
             </div>
         </div>
 
-        <div class="col-md-3 order-md-2">
+        <div class="col-md-2 order-md-2">
         </div>
-          <div class="col-md-4 order-md-2">
+          <div class="col-md-5 order-md-2">
           <div class="container-contact100-form-btn">
             <button type="submit" class="contact100-form-btn"  onclick="return validateForm()">
               <span>
@@ -100,40 +90,20 @@
         </div>
       </div>
         </form>
-          </div>
-
-        </div>
       </div>
-
-      <footer class="my-5 pt-5 text-muted text-center text-small">
-        <!--
-        <p class="mb-1">&copy; 2018 </p>
-        <ul class="list-inline">
-          <li class="list-inline-item"><a href="#">Privacy</a></li>
-          <li class="list-inline-item"><a href="#">Terms</a></li>
-          <li class="list-inline-item"><a href="#">Ayuda</a></li>
-        </ul>
-        -->
-      </footer>
     </div>
-
-    <!-- Bootstrap core JavaScript
+    </div>
+  </div>
+  <!-- Bootstrap core JavaScript
     ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script>window.jQuery || document.write('<script src="../../../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
-     <!-- <script src="../../../assets/js/vendor/popper.min.js"></script> -->
-    
-    <!--===============================================================================================-->
   <script src="{% static "vendor/jquery/jquery-3.2.1.min.js" %}"></script>
 <!--===============================================================================================-->
-  <script src="{% static "vendor/animsition/js/animsition.min.js" %}"></script>
 <!--===============================================================================================-->
   <script src="{% static "vendor/bootstrap/js/popper.js" %}"></script>
   <script src="{% static "vendor/bootstrap/js/bootstrap.min.js" %}"></script>
 <!--===============================================================================================-->
-  <script src="{% static "vendor/select2/select2.min.js" %}"></script>
-  {% for axe, form in axis.items %}
+  <script>
+    {% for axe, form in axis.items %}
   <script>
     $('[id^="id_{{ axe }}-dummy_goal"]').on('change', function() {
       $('[id^="id_{{ axe }}-goal"]').prop('checked', false);  
@@ -160,5 +130,5 @@
   </script>
 <!--===============================================================================================-->
   <script src="{% static "js/main.js" %}"></script>
-  </body>
+</body>
 </html>

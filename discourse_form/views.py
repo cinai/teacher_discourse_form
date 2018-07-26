@@ -45,7 +45,7 @@ def get_answers_2(request,form_id):
     d_form = Discourse_form.objects.get(id=form_id)
     text = d_form.text
     form = TeacherDiscourseForm()
-    return render(request, 'test.html', {'form': form,'text':text,'form_id':form_id})#[x if x!=" " else "-" for x in text.splitlines()]})
+    return render(request, 'test2.html', {'form': form,'text':clean_spaces(text.splitlines()),'form_id':form_id})#[x if x!=" " else "-" for x in text.splitlines()]})
 
 def get_answers(request,form_id):
     d_form = Discourse_form.objects.get(id=form_id)
@@ -140,7 +140,12 @@ def get_skills(request,form_id,user):
                 for skill in skills:
                     ans_skill = Answered_skill(ans_form=ans_form,skill=skill)
                     ans_skill.save()
-                # save axis
+                    print("hiiii")
+                    for key, value in request.POST.items():
+                        if key.startswith('input_id_'+str(ans_skill.skill.subject)+'_skill_'+str(ans_skill.skill.pk)):
+                            print(key)
+                        print('input_id_'+str(ans_skill.skill.subject)+'_skill_'+str(ans_skill.skill.pk))
+                # save axis1
                 axis = form_2.cleaned_data['axis']
                 for axe in axis:
                     ans_axe = Answered_axis(ans_form=ans_form,axis=axe)
