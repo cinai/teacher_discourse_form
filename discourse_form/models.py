@@ -2,8 +2,9 @@ from django.db import models
 from sessions_coding.models import Classroom_session,Subject,Axis,Skill,Learning_goal,Copus_code
 
 DIALOGIC_CHOICES = (
-    ('autoritativo', 'Autoritativo'),
-    ('dialogico', 'Dialógico'),
+    ('Autoritativo', 'Autoritativo'),
+    ('Dialogico', 'Dialógico'),
+    ('NA', 'NA'),
 )
 
 class Discourse_form(models.Model):

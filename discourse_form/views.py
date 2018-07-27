@@ -19,6 +19,10 @@ from .models import (
     Answered_dialogic_phrases,
     )
 
+CHOICES = [('Autoritativo','Autoritativo'),
+            ('Dialogico','Dialógico'),
+            ('NA','Ninguna de las anteriores')]
+
 def index(request):
     return HttpResponse("Me parece sospechosa tu actitud")
 
@@ -72,6 +76,8 @@ def get_answers(request,form_id):
                 Answered_subject.objects.filter(ans_form=ans_form).delete() 
                 # delete all copus code with this stuff
                 Answered_copus_code.objects.filter(ans_form=ans_form).delete()
+                # delete all copus code with this stuff
+                Answered_dialogic_phrases.objects.filter(ans_form=ans_form).delete()
                 # 
                 ans_form.done = False
                 ans_form.save()
@@ -97,6 +103,24 @@ def get_answers(request,form_id):
                         else:
                             index_phrases = clean_text.index(value)+1
                             ans_phrases = Answered_copus_phrases(copus=ans_copus,ans_form=ans_form,phrases=value,code=index_phrases)
+                            ans_phrases.save()
+            if dialogic != 'NA':
+                if dialogic.startswith('A'):
+                    dialogic_id = 0
+                else:
+                    dialogic_id = 1
+                d_phrases_name = 'input_id_dialogic_'+str(dialogic_id)
+                print(d_phrases_name)
+                for key,value in request.POST.items():
+                    if key.startswith(d_phrases_name):
+                        if type(value) == list:
+                            for element in value:
+                                index_phrases = clean_text.index(element)+1
+                                ans_phrases = Answered_dialogic_phrases(dialogic=dialogic,ans_form=ans_form,phrases=element,code=index_phrases)
+                                ans_phrases.save()
+                        else:
+                            index_phrases = clean_text.index(value)+1
+                            ans_phrases = Answered_dialogic_phrases(dialogic=dialogic,ans_form=ans_form,phrases=value,code=index_phrases)
                             ans_phrases.save()
             # redirect to next form
             crypted_mail = signing.dumps(email)
@@ -160,8 +184,19 @@ def get_answers_back(request,form_id,user):
                 for phrases in ans_phrases:
                     initial_phrases_cc[copus_id].append(phrases.code)
         initial_dialogic = ans_form.dialogic
+        if initial_dialogic.startswith('A'):
+            dialogic_id = 0
+        else:
+            dialogic_id = 1
+        initial_phrases_d = {}
+        ans_phrases = Answered_dialogic_phrases.objects.filter(ans_form=ans_form,dialogic=initial_dialogic)
+        if ans_phrases.exists():
+            initial_phrases_d[dialogic_id] = []
+            for phrases in ans_phrases:
+                    initial_phrases_d[dialogic_id].append(phrases.code)
         form = TeacherDiscourseForm(initial_email=mail,initial_subjects=initial_subjects,initial_cc=initial_cc,initial_dialogic=initial_dialogic)
-        return render(request, 'formulario.html', {'form': form,'text':clean_spaces(text.splitlines()),'form_id':form_id,'cc_phrases':initial_phrases_cc})
+        print(initial_phrases_d)
+        return render(request, 'formulario.html', {'form': form,'text':clean_spaces(text.splitlines()),'form_id':form_id,'cc_phrases':initial_phrases_cc,'d_phrases':initial_phrases_d})
     return HttpResponseNotFound('<h1>Page not found</h1>')
 
 def get_skills(request,form_id,user):

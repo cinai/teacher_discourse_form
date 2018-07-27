@@ -53,7 +53,37 @@
           <div class="form-group" style="margin-bottom:5%">
             <div class="fieldWrapper">
               <label class="label-spec" for="id_dialogic">El discurso docente tiene carácter:</label>
-              {{ form.dialogic }}
+              {% for field in form.dialogic %}
+              {{ field.label_tag }}
+              {{ field }}
+              {% if forloop.counter < 3 %}
+              <button type="button" id="span_{{field.id_for_label}}" {% if form.dialogic.initial|contains2:field.id_for_label %} style=""  {%else%} style="display:none" {% endif %} ><span  class="glyphicon glyphicon-pencil" ></span></button>
+
+              <!-- Modal -->
+                          <div class="modal fade in bd-example-modal-lg" id="myModal_{{field.id_for_label}}" role="dialog">
+                            <div class="modal-dialog modal-lg vertical-align-center">
+                            
+                              <!-- Modal content-->
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h4 class="modal-title" id="my_title_{{field.id_for_label}}"></h4>
+                                </div>
+                                <div class="modal-body">
+                                  <pre class="pre-scrollable " style='white-space:pre-wrap;word-break: keep-all;'>
+{% for line in text %}
+<label><input type="checkbox" name="input_{{field.id_for_label}}_{{ forloop.counter }}" value="{{ line }}" {% if forloop.counter in d_phrases|in_dict_str2:field.id_for_label %} checked {% endif %}> {{ forloop.counter}}- {{ line }}</label>
+{% endfor %}</pre>
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-default" data-dismiss="modal">Guardar</button>
+                                </div>
+                              </div>
+                              
+                            </div>
+                          </div>
+                    {% endif %}
+              {% endfor %}
+            </div>
             </div>
           </div>
           <div class="form-group" style="margin-bottom:5%">
@@ -127,6 +157,7 @@
       $('[id^="id_copus_code_"]').prop('checked', false);
       $("[id^='span_id_copus_code']").hide();  
     });
+
     $('[id^="id_copus_code_"]').on('change', function() {
       if (this.checked){
         $("[id='span_"+this.id+"']").show();
@@ -135,6 +166,23 @@
         $("[id='span_"+this.id+"']").hide();
       }
       $('[id^="id_dummy_copus_code"]').prop('checked', false);  
+    });
+
+    $('[id="id_dialogic_2"]').click( function() 
+    {
+      if (this.checked){
+        $("[id^='span_id_dialogic']").hide(); 
+      }
+
+    });
+    $('[id^="id_dialogic_"]').on('change', function() {
+      if (this.checked){
+        $("[id^='span_id_dialogic']").hide(); 
+        $("[id='span_"+this.id+"']").show();
+      }
+      else{
+        $("[id='span_"+this.id+"']").hide();
+      }
     });
     function validateForm(id) {
       if ($('#id_subject input:checked').length == 0){
@@ -161,7 +209,7 @@
         });
 //data-toggle="modal" data-target="#myModal_{{ field.id_for_label}}" 
     });
-    console.log({{cc_phrases}});
+    console.log({{d_phrases}});
   </script>
 <!--===============================================================================================-->
   <script src="{% static "js/main.js" %}"></script>
