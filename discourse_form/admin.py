@@ -10,7 +10,10 @@ from .models import (
 	Answered_learning_goal,
 	Answered_copus_code,
 	Answered_axis_phrases,
-	Answered_skill_phrases
+	Answered_skill_phrases,
+	Answered_copus_phrases,
+	Answered_dialogic_phrases,
+
 	)
 
 admin.site.register(Discourse_form)
@@ -22,4 +25,6 @@ admin.site.register(Answered_learning_goal)
 admin.site.register(Answered_copus_code)
 admin.site.register(Answered_axis_phrases)
 admin.site.register(Answered_skill_phrases)
+admin.site.register(Answered_copus_phrases)
+admin.site.register(Answered_dialogic_phrases)
 

@@ -1,6 +1,11 @@
 from django.db import models
 from sessions_coding.models import Classroom_session,Subject,Axis,Skill,Learning_goal,Copus_code
 
+DIALOGIC_CHOICES = (
+    ('autoritativo', 'Autoritativo'),
+    ('dialogico', 'Dialógico'),
+)
+
 class Discourse_form(models.Model):
     session = models.ForeignKey(Classroom_session, on_delete=models.CASCADE,default=1)
     init_line = models.IntegerField(default=0)
@@ -63,3 +68,19 @@ class Answered_skill_phrases(models.Model):
     phrases = models.TextField()
     def __str__(self):
         return str(self.skill)
+
+class Answered_dialogic_phrases(models.Model):
+    dialogic = models.CharField(max_length=20,choices=DIALOGIC_CHOICES)
+    ans_form = models.ForeignKey(Form_answer, on_delete=models.CASCADE)
+    code = models.IntegerField(default=0,blank=True)
+    phrases = models.TextField()
+    def __str__(self):
+        return str(self.dialogic)
+
+class Answered_copus_phrases(models.Model):
+    copus = models.ForeignKey(Answered_copus_code,on_delete=models.CASCADE)
+    ans_form = models.ForeignKey(Form_answer, on_delete=models.CASCADE)
+    code = models.IntegerField(default=0,blank=True)
+    phrases = models.TextField()
+    def __str__(self):
+        return str(self.copus)

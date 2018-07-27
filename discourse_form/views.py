@@ -14,7 +14,9 @@ from .models import (
     Answered_learning_goal,
     Answered_copus_code,
     Answered_axis_phrases,
-    Answered_skill_phrases
+    Answered_skill_phrases,
+    Answered_copus_phrases,
+    Answered_dialogic_phrases,
     )
 
 def index(request):
@@ -53,6 +55,7 @@ def get_answers_2(request,form_id):
 def get_answers(request,form_id):
     d_form = Discourse_form.objects.get(id=form_id)
     text = d_form.text
+    clean_text = clean_spaces(text.splitlines())
     if request.method == 'POST':
         form = TeacherDiscourseForm(request.POST)
         if form.is_valid():
@@ -82,6 +85,19 @@ def get_answers(request,form_id):
             for code in copus_codes:
                 ans_copus = Answered_copus_code(ans_form=ans_form,copus_code=code)
                 ans_copus.save()
+                cc_phrases_name = 'input_id_copus_code_'+str(ans_copus.copus_code.pk-1)
+                for key, value in request.POST.items():
+                    if key.startswith(cc_phrases_name):
+
+                        if type(value) == list:
+                            for element in value:
+                                index_phrases = clean_text.index(element)+1
+                                ans_phrases = Answered_copus_phrases(copus=ans_copus,ans_form=ans_form,phrases=element,code=index_phrases)
+                                ans_phrases.save()
+                        else:
+                            index_phrases = clean_text.index(value)+1
+                            ans_phrases = Answered_copus_phrases(copus=ans_copus,ans_form=ans_form,phrases=value,code=index_phrases)
+                            ans_phrases.save()
             # redirect to next form
             crypted_mail = signing.dumps(email)
             return HttpResponseRedirect(reverse('discourse_form:question_2', kwargs={'form_id':form_id,'user':crypted_mail}))
@@ -89,7 +105,7 @@ def get_answers(request,form_id):
     else:
         form = TeacherDiscourseForm()
 
-    return render(request, 'formulario.html', {'form': form,'text':clean_spaces(text.splitlines()),'form_id':form_id})#[x if x!=" " else "-" for x in text.splitlines()]})
+    return render(request, 'formulario.html', {'form': form,'text':clean_text,'form_id':form_id})#[x if x!=" " else "-" for x in text.splitlines()]})
 
 def get_answers_back(request,form_id,user):
     d_form = Discourse_form.objects.get(id=form_id)
@@ -132,11 +148,20 @@ def get_answers_back(request,form_id,user):
                 for axe in axis:
                     ans_axe = Answered_axis(ans_form=ans_form,axis=axe)
                     ans_axe.save()
+
         initial_subjects = [x.subject.id for x in Answered_subject.objects.filter(ans_form=ans_form)]
         initial_cc = [x.copus_code.id for x in Answered_copus_code.objects.filter(ans_form=ans_form)]
+        initial_phrases_cc = {}
+        for ans_copus in Answered_copus_code.objects.filter(ans_form=ans_form):
+            ans_phrases = Answered_copus_phrases.objects.filter(ans_form=ans_form,copus=ans_copus)
+            copus_id = ans_copus.copus_code.id
+            initial_phrases_cc[copus_id] = []
+            if ans_phrases.exists():
+                for phrases in ans_phrases:
+                    initial_phrases_cc[copus_id].append(phrases.code)
         initial_dialogic = ans_form.dialogic
         form = TeacherDiscourseForm(initial_email=mail,initial_subjects=initial_subjects,initial_cc=initial_cc,initial_dialogic=initial_dialogic)
-        return render(request, 'formulario.html', {'form': form,'text':clean_spaces(text.splitlines()),'form_id':form_id})
+        return render(request, 'formulario.html', {'form': form,'text':clean_spaces(text.splitlines()),'form_id':form_id,'cc_phrases':initial_phrases_cc})
     return HttpResponseNotFound('<h1>Page not found</h1>')
 
 def get_skills(request,form_id,user):
@@ -210,7 +235,6 @@ def get_skills(request,form_id,user):
                 for skill in ans_skills:
                     ans_phrases = Answered_skill_phrases.objects.filter(ans_form=ans_form,skill=skill)
                     if ans_phrases.exists():
-                        print("yei")
                         skill_id = skill.skill.pk
                         initial_phrases_skills[skill_id] = []
                         for phrases in ans_phrases:
@@ -224,7 +248,6 @@ def get_skills(request,form_id,user):
                 initial_axis = []
             form_2 = AfterSubjectForm(subject=ans_subject,grade_session=grade_session,prefix=subject_name,initial_skills=initial_skills,initial_axis=initial_axis)
             context['subjects'][subject_name] = form_2
-    print(initial_phrases_skills)
     context['form_phrases'] = initial_phrases_skills            
     context['text'] = clean_text
     context['user_m'] = user

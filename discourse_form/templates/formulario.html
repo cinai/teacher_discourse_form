@@ -71,6 +71,29 @@
                     <div class="fieldWrapper">
                         
                         {{ field.label_tag }} {{ field }}
+                        <button type="button" id="span_{{field.id_for_label}}"  {% if form.copus_code.initial|contains:field.id_for_label %} style=""  {%else%} style="display:none" {% endif %} ><span  class="glyphicon glyphicon-pencil" ></span></button>
+                        <!-- Modal -->
+                          <div class="modal fade in bd-example-modal-lg" id="myModal_{{field.id_for_label}}" role="dialog">
+                            <div class="modal-dialog modal-lg vertical-align-center">
+                            
+                              <!-- Modal content-->
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h4 class="modal-title" id="my_title_{{field.id_for_label}}"></h4>
+                                </div>
+                                <div class="modal-body">
+                                  <pre class="pre-scrollable " style='white-space:pre-wrap;word-break: keep-all;'>
+{% for line in text %}
+<label><input type="checkbox" name="input_{{field.id_for_label}}_{{ forloop.counter }}" value="{{ line }}" {% if forloop.counter in cc_phrases|in_dict_str:field.id_for_label %} checked {% endif %}> {{ forloop.counter}}- {{ line }}</label>
+{% endfor %}</pre>
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-default" data-dismiss="modal">Guardar</button>
+                                </div>
+                              </div>
+                              
+                            </div>
+                          </div>
                     </div>
 
                     {% endfor %}
@@ -101,9 +124,16 @@
 <!--===============================================================================================-->
   <script>
     $('[id^="id_dummy_copus_code"]').on('change', function() {
-      $('[id^="id_copus_code_"]').prop('checked', false);  
+      $('[id^="id_copus_code_"]').prop('checked', false);
+      $("[id^='span_id_copus_code']").hide();  
     });
     $('[id^="id_copus_code_"]').on('change', function() {
+      if (this.checked){
+        $("[id='span_"+this.id+"']").show();
+      }
+      else{
+        $("[id='span_"+this.id+"']").hide();
+      }
       $('[id^="id_dummy_copus_code"]').prop('checked', false);  
     });
     function validateForm(id) {
@@ -121,6 +151,17 @@
       }
       return true;
     }
+    $( document ).ready(function() {
+      $('[id^="span_id_"]').click(function() {
+        label_text = $("[id='"+this.id.substring(5)+"']").parent().text();
+        label_id = this.id.substring(4);
+        $("[id='my_title"+label_id+"']").text('Seleccione las líneas del fragmento que se relacionan con: "'+label_text+'"');
+        $("[id='myModal"+label_id+"']").modal();
+            
+        });
+//data-toggle="modal" data-target="#myModal_{{ field.id_for_label}}" 
+    });
+    console.log({{cc_phrases}});
   </script>
 <!--===============================================================================================-->
   <script src="{% static "js/main.js" %}"></script>
