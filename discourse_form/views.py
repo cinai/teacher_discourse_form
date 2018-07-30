@@ -399,10 +399,13 @@ def forms_to_do(request):
             answer = Form_answer.objects.get(form=d.pk,user='patricio.calfucura@ciae.uchile.cl')
         except Form_answer.DoesNotExist:
             answer = None
+        link = 'https://discurso-docente.herokuapp.com/encuesta/'+str(d.pk)
         if answer:
-            link = 'https://discurso-docente.herokuapp.com/encuesta/'+str(d.pk)
             a_dict[counter] = {'link':link,'done': answer.done}
-            counter += 1
+        else:
+            a_dict[counter] = {'link':link,'done': 0}
+        counter += 1
+
     forms_answered = Form_answer.objects.filter(user='patricio.calfucura@ciae.uchile.cl')
     context = {}
     context['forms_todo'] = a_dict
