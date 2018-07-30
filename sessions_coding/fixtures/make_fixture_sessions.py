@@ -40,18 +40,14 @@ for i,row in df_sessions.iterrows():
         les_dict.append(a_dict)
         counter += 1
 
+from itertools import islice
+    
 # load 1-20 lines
 for s in sessions:
     file_name = os.path.join(sessions_files_path,s[1])
     with open(file_name,'r', encoding="utf8") as f:
-        array = []
-        c = 0
-        for line in f:
-            array.append(line)
-            c+=1
-            if c == 20:
-                break
-    a_dict = {'model':'discourse_form.discourse_form','pk':s[0],'fields':{'session':s[0],'init_line':1,'end_line':20,'artificial_name':'_'.join([s[1],'1','20']),'text':'\n'.join(array)}}
+        array = list(islice(f, 20))
+    a_dict = {'model':'discourse_form.discourse_form','pk':s[0],'fields':{'session':s[0],'init_line':1,'end_line':20,'artificial_name':'_'.join([s[1],'1','20']),'text':''.join(array)}}
     les_dict.append(a_dict)
 # output the json file
 with open('data_sessions_jose.json', 'w') as outfile:
