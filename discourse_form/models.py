@@ -11,7 +11,7 @@ class Discourse_form(models.Model):
     session = models.ForeignKey(Classroom_session, on_delete=models.CASCADE,default=1)
     init_line = models.IntegerField(default=0)
     end_line = models.IntegerField(default=0)
-    artificial_name = models.CharField(max_length=30)
+    artificial_name = models.CharField(max_length=100)
     text = models.TextField()
     def __str__(self):
         return self.artificial_name

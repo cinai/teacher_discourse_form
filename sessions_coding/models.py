@@ -19,9 +19,9 @@ class School(models.Model):
 class Classroom_session(models.Model):
     grade = models.ForeignKey(Grade, on_delete=models.CASCADE)
     teacher = models.ForeignKey(Teacher,on_delete=models.CASCADE)
-    wav_name = models.CharField(max_length=30)
+    wav_name = models.CharField(max_length=100)
     duration = models.IntegerField(default=0,blank=True)
-    content = models.CharField(max_length=30,blank=True)
+    content = models.CharField(max_length=100,blank=True)
     colegio = models.ForeignKey(School,on_delete=models.CASCADE,blank=True)
     date = models.DateTimeField(blank=True,null=True)
     path = models.FilePathField(path=settings.FILE_PATH_FIELD_DIRECTORY,max_length=300,blank=True)
