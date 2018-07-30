@@ -65,13 +65,12 @@ def get_answers(request,form_id):
         if form.is_valid():
             # save form answer
             email = form.cleaned_data['email']
-            dialogic = form.cleaned_data['dialogic']
+            dialogic_list = form.cleaned_data['dialogic']
             ans_form,created = Form_answer.objects.get_or_create(form=d_form,user=email)
+            ans_form.dialogic = "-".join(dialogic_list)
             if created:
-                ans_form.dialogic = dialogic
                 ans_form.save()
             else:
-                ans_form.dialogic = dialogic
                 # delete all subjects related to ans_form
                 Answered_subject.objects.filter(ans_form=ans_form).delete() 
                 # delete all copus code with this stuff
@@ -104,24 +103,25 @@ def get_answers(request,form_id):
                             index_phrases = clean_text.index(value)+1
                             ans_phrases = Answered_copus_phrases(copus=ans_copus,ans_form=ans_form,phrases=value,code=index_phrases)
                             ans_phrases.save()
-            if dialogic != 'NA':
-                if dialogic.startswith('A'):
-                    dialogic_id = 0
-                else:
-                    dialogic_id = 1
-                d_phrases_name = 'input_id_dialogic_'+str(dialogic_id)
-                print(d_phrases_name)
-                for key,value in request.POST.items():
-                    if key.startswith(d_phrases_name):
-                        if type(value) == list:
-                            for element in value:
-                                index_phrases = clean_text.index(element)+1
-                                ans_phrases = Answered_dialogic_phrases(dialogic=dialogic,ans_form=ans_form,phrases=element,code=index_phrases)
+            if not 'NA' in dialogic_list:
+                for dialogic in dialogic_list:
+                    if dialogic.startswith('A'):
+                        dialogic_id = 0
+                    else:
+                        dialogic_id = 1
+                    d_phrases_name = 'input_id_dialogic_'+str(dialogic_id)
+                    print(d_phrases_name)
+                    for key,value in request.POST.items():
+                        if key.startswith(d_phrases_name):
+                            if type(value) == list:
+                                for element in value:
+                                    index_phrases = clean_text.index(element)+1
+                                    ans_phrases = Answered_dialogic_phrases(dialogic=dialogic,ans_form=ans_form,phrases=element,code=index_phrases)
+                                    ans_phrases.save()
+                            else:
+                                index_phrases = clean_text.index(value)+1
+                                ans_phrases = Answered_dialogic_phrases(dialogic=dialogic,ans_form=ans_form,phrases=value,code=index_phrases)
                                 ans_phrases.save()
-                        else:
-                            index_phrases = clean_text.index(value)+1
-                            ans_phrases = Answered_dialogic_phrases(dialogic=dialogic,ans_form=ans_form,phrases=value,code=index_phrases)
-                            ans_phrases.save()
             # redirect to next form
             crypted_mail = signing.dumps(email)
             return HttpResponseRedirect(reverse('discourse_form:question_2', kwargs={'form_id':form_id,'user':crypted_mail}))
@@ -183,17 +183,19 @@ def get_answers_back(request,form_id,user):
             if ans_phrases.exists():
                 for phrases in ans_phrases:
                     initial_phrases_cc[copus_id].append(phrases.code)
-        initial_dialogic = ans_form.dialogic
-        if initial_dialogic.startswith('A'):
-            dialogic_id = 0
-        else:
-            dialogic_id = 1
+        initial_dialogic = ans_form.dialogic.split('-')
+        list_dialogic = []
+        if 'Autoritativo' in initial_dialogic:
+            list_dialogic.append(0)
+        if 'Dialogico' in initial_dialogic:
+            list_dialogic.append(1)
         initial_phrases_d = {}
-        ans_phrases = Answered_dialogic_phrases.objects.filter(ans_form=ans_form,dialogic=initial_dialogic)
-        if ans_phrases.exists():
-            initial_phrases_d[dialogic_id] = []
-            for phrases in ans_phrases:
-                    initial_phrases_d[dialogic_id].append(phrases.code)
+        for dialogic_id in list_dialogic:
+            ans_phrases = Answered_dialogic_phrases.objects.filter(ans_form=ans_form,dialogic=initial_dialogic[dialogic_id])
+            if ans_phrases.exists():
+                initial_phrases_d[dialogic_id] = []
+                for phrases in ans_phrases:
+                        initial_phrases_d[dialogic_id].append(phrases.code)
         form = TeacherDiscourseForm(initial_email=mail,initial_subjects=initial_subjects,initial_cc=initial_cc,initial_dialogic=initial_dialogic)
         print(initial_phrases_d)
         return render(request, 'formulario.html', {'form': form,'text':clean_spaces(text.splitlines()),'form_id':form_id,'cc_phrases':initial_phrases_cc,'d_phrases':initial_phrases_d})

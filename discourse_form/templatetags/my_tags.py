@@ -41,6 +41,19 @@ def contains(a_list,value):
     return False
 
 @register.filter
+def contains3(a_list,value):
+    if a_list:
+        value = int(value.split('_')[-1])
+        for a_str in a_list:
+            if a_str.startswith('Au'):
+                a_str = '0'
+            else:
+                a_str = '1'
+            if value == int(a_str):
+                return True
+    return False
+
+@register.filter
 def contains2(a_str,value):
     if a_str:
         value = int(value.split('_')[-1])

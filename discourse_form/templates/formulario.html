@@ -59,7 +59,7 @@
               {{ field.label_tag }}
               {{ field }}
               {% if forloop.counter < 3 %}
-              <button type="button" id="span_{{field.id_for_label}}" {% if form.dialogic.initial|contains2:field.id_for_label %} style=""  {%else%} style="display:none" {% endif %} ><span  class="glyphicon glyphicon-pencil" ></span></button>
+              <button type="button" id="span_{{field.id_for_label}}" {% if form.dialogic.initial|contains3:field.id_for_label %} style=""  {%else%} style="display:none" {% endif %} ><span  class="glyphicon glyphicon-pencil" ></span></button>
 
               <!-- Modal -->
                           <div class="modal fade in bd-example-modal-lg" id="myModal_{{field.id_for_label}}" role="dialog">
@@ -100,25 +100,11 @@
                   </script>
                   {% endif %}
                 {% endif %}
-                <!--
-              <div class="fieldWrapper">
-                <div class="col-md-12">
                     <label class="label-spec" for="id_copus_code">Seleccione las acciones que observa en el docente:</label>
-                </div>
-                    {% for choice_id, choice_label in form.copus_code.field.choices %}
-                    <div class="col-md-1">
-                      <input type="checkbox" class="big-checkbox" name="category" value="{{choice_id}}" style="display:inline;">
-                    </div>
-                    <div class="col-md-11">
-                      <label>{{choice_label}}</label>
-                    </div>
-                    {% endfor %}
-                  </div>
-                -->
                     {% for field in form.copus_code %}
                     <div class="fieldWrapper">
                         
-                        <div>{{ field }}</div> 
+                        {{ field.label_tag }} {{ field }}
                         <button type="button" id="span_{{field.id_for_label}}"  {% if form.copus_code.initial|contains:field.id_for_label %} style=""  {%else%} style="display:none" {% endif %} ><span  class="glyphicon glyphicon-pencil" ></span></button>
                         <!-- Modal -->
                           <div class="modal fade in bd-example-modal-lg" id="myModal_{{field.id_for_label}}" role="dialog">
@@ -127,9 +113,7 @@
                               <!-- Modal content-->
                               <div class="modal-content">
                                 <div class="modal-header">
-                                  <h4 class="modal-title" id="my_title_{{field.id_for_label}}">
-                                    <h3>{{form.copus_code.initial}}</h3>
-                                  </h4>
+                                  <h4 class="modal-title" id="my_title_{{field.id_for_label}}"></h4>
                                 </div>
                                 <div class="modal-body">
                                   <pre class="pre-scrollable " style='white-space:pre-wrap;word-break: keep-all;'>
@@ -191,12 +175,16 @@
     $('[id="id_dialogic_2"]').click( function() 
     {
       if (this.checked){
+        $('[id^="id_dialogic_0"]').prop('checked', false);
+        $('[id^="id_dialogic_1"]').prop('checked', false);
         $("[id^='span_id_dialogic']").hide(); 
       }
 
     });
     $('[id^="id_dialogic_"]').on('change', function() {
       if (this.checked){
+        $('[id^="id_dialogic_2"]').prop('checked', false);
+        $('[id="'+this.id+'"]').prop('checked', true);
         $("[id='span_"+this.id+"']").show();
       }
       else{
