@@ -60,3 +60,5 @@ class Copus_code(models.Model):
     eng_code = models.CharField(max_length=4)
     def __str__(self):
         return '['+self.code+'] '+self.long_name  #self.long_name#
+    class Meta:
+        ordering = ['pk']
