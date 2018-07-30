@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- Bootstrap core CSS -->
     <link href="{% static "bootstrap-table-1.12.1/src/bootstrap-table.css" %}" rel="stylesheet"/>
-    
+
     <link rel="stylesheet" type="text/css" href="{% static "vendor/bootstrap/css/bootstrap.min.css" %}">
     <link rel="stylesheet" type="text/css" href="{% static "fonts/font-awesome-4.7.0/css/font-awesome.min.css" %}">
     <!--===============================================================================================-->
@@ -16,7 +16,11 @@
     <link rel="stylesheet" type="text/css" href="{% static "css/util.css" %}">
     <link rel="stylesheet" type="text/css" href="{% static "css/main.css" %}">
 </head>
-<body class="">
+<div id="msg" style="font-size:largest;">
+<!-- you can set whatever style you want on this -->
+Loading, please wait...
+</div>
+<body class="" style="display:none;">
   <div class="container">
     <div class="col-md-12"> <br><h1>Formularios a completar </h1><br><br></div>
 
@@ -57,6 +61,11 @@
   <script src="{% static "vendor/bootstrap/js/bootstrap.min.js" %}"></script>
 <!--===============================================================================================-->
   <script src="{% static "js/main.js" %}"></script>
-
+  <script type="text/javascript">
+    $(document).ready(function() {
+        $('#body').show();
+        $('#msg').hide();
+    });
+  </script>
 </body>
 </html>
