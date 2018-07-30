@@ -387,3 +387,23 @@ def answers(request,form_id):
         context['users_answers'].append(a_dict)
 
     return render(request, 'respuestas.html', context)
+
+import datetime
+
+def forms_to_do(request):
+    discourse_forms = Discourse_form.objects.all()
+    a_dict = {}
+    counter = 0
+    for d in discourse_forms:
+        try:
+            answer = Form_answer.objects.get(form=d.pk,user='patricio.calfucura@ciae.uchile.cl')
+        except Form_answer.DoesNotExist:
+            answer = None
+        if answer:
+            link = 'https://discurso-docente.herokuapp.com/encuesta/'+str(d.pk)
+            a_dict[counter] = {'link':link,'done': answer.done}
+            counter += 1
+    forms_answered = Form_answer.objects.filter(user='patricio.calfucura@ciae.uchile.cl')
+    context = {}
+    context['forms_todo'] = a_dict
+    return render(request, 'todo.html', context)

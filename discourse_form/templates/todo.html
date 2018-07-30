@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    {% load static %}
+    {% load my_tags %}
+    <title>Discurso docente</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static "vendor/bootstrap/css/bootstrap.min.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "fonts/font-awesome-4.7.0/css/font-awesome.min.css" %}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static "fonts/iconic/css/material-design-iconic-font.min.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/util.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/main.css" %}">
+</head>
+<body class="">
+  <div class="container">
+    <div class="col-md-12"> <br><h1>Descripción del discurso docente <small> Formularios a completar</small></h1><br><br></div>
+
+
+    <div class="col-md-6" style="overflow: auto; height:650px;">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Link</th>
+            <th scope="col">Completado</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for key, forms in forms_todo.items %}
+          <tr style="text-align:center">
+            <th scope="row">{{ forloop.counter }}</th>
+            <td> <a href="{{ forms.link }}">{{ forms.link }} </a> </td>
+            <td>             
+              {% if forms.done %}
+              <span class="glyphicon glyphicon-ok green"></span>
+              {% else %}
+              <span class="glyphicon glyphicon-remove red"></span>
+              {% endif %}</td>
+          </tr>
+          {% endfor%}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <!-- Bootstrap core JavaScript
+    ================================================== -->
+  <script src="{% static "vendor/jquery/jquery-3.2.1.min.js" %}"></script>
+<!--===============================================================================================-->
+<!--===============================================================================================-->
+  <script src="{% static "vendor/bootstrap/js/popper.js" %}"></script>
+  <script src="{% static "vendor/bootstrap/js/bootstrap.min.js" %}"></script>
+<!--===============================================================================================-->
+  <script src="{% static "js/main.js" %}"></script>
+</body>
+</html>
