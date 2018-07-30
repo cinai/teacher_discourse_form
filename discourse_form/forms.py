@@ -10,7 +10,7 @@ class TeacherDiscourseForm(forms.Form):
     subject = forms.ModelMultipleChoiceField(queryset=Subject.objects.exclude(subject='Ninguna'), widget=forms.CheckboxSelectMultiple())
     copus_code = forms.ModelMultipleChoiceField(queryset=Copus_code.objects.all(),required=False, widget=forms.CheckboxSelectMultiple())#attrs={'class':'list-group'}))
     dummy_copus_code = forms.BooleanField(required=False)
-    dialogic = forms.ChoiceField(choices=CHOICES, widget=forms.RadioSelect())
+    dialogic = forms.ChoiceField(choices=CHOICES, widget=forms.CheckboxSelectMultiple())
     def __init__(self, *args, **kwargs):
         initial_subjects = kwargs.pop('initial_subjects', None)
         initial_email = kwargs.pop('initial_email', None)

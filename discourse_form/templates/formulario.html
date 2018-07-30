@@ -100,11 +100,25 @@
                   </script>
                   {% endif %}
                 {% endif %}
+                <!--
+              <div class="fieldWrapper">
+                <div class="col-md-12">
                     <label class="label-spec" for="id_copus_code">Seleccione las acciones que observa en el docente:</label>
+                </div>
+                    {% for choice_id, choice_label in form.copus_code.field.choices %}
+                    <div class="col-md-1">
+                      <input type="checkbox" class="big-checkbox" name="category" value="{{choice_id}}" style="display:inline;">
+                    </div>
+                    <div class="col-md-11">
+                      <label>{{choice_label}}</label>
+                    </div>
+                    {% endfor %}
+                  </div>
+                -->
                     {% for field in form.copus_code %}
                     <div class="fieldWrapper">
                         
-                        {{ field.label_tag }} {{ field }}
+                        <div>{{ field }}</div> 
                         <button type="button" id="span_{{field.id_for_label}}"  {% if form.copus_code.initial|contains:field.id_for_label %} style=""  {%else%} style="display:none" {% endif %} ><span  class="glyphicon glyphicon-pencil" ></span></button>
                         <!-- Modal -->
                           <div class="modal fade in bd-example-modal-lg" id="myModal_{{field.id_for_label}}" role="dialog">
@@ -183,7 +197,6 @@
     });
     $('[id^="id_dialogic_"]').on('change', function() {
       if (this.checked){
-        $("[id^='span_id_dialogic']").hide(); 
         $("[id='span_"+this.id+"']").show();
       }
       else{

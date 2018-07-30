@@ -46,7 +46,7 @@ pre.code code::before {
   src: url('../fonts/montserrat/Montserrat-Medium.ttf'); 
 }
 
-
+ .big-checkbox {width: 15px; height: 15px;}
 
 /*//////////////////////////////////////////////////////////////////
 [ RESTYLE TAG ]*/
