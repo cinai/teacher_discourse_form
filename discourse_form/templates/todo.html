@@ -41,18 +41,6 @@
               {% endif %}</td>
           </tr>
           {% endfor%}
-          {% for forms in "000011111111111111111111111111111111111000000000000000000000000000000111010101" %}
-          <tr style="text-align:center">
-            <td scope="row">{{ forloop.counter }}</td>
-            <td> <a href="">{{ forloop.counter }} </a> </td>
-            <td>             
-              {% if forms.done %}
-              <span class="glyphicon glyphicon-ok green"></span>
-              {% else %}
-              <span class="glyphicon glyphicon-remove red"></span>
-              {% endif %}</td>
-          </tr>
-          {% endfor%}
         </tbody>
       </table>
     </div>
