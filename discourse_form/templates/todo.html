@@ -9,6 +9,7 @@
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" type="text/css" href="{% static "vendor/bootstrap/css/bootstrap.min.css" %}">
     <link rel="stylesheet" type="text/css" href="{% static "fonts/font-awesome-4.7.0/css/font-awesome.min.css" %}">
+    <link href="{% static "bootstrap-table-1.12.1/src/bootstrap-table.css" %}" rel="stylesheet"/>
     <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="{% static "fonts/iconic/css/material-design-iconic-font.min.css" %}">
     <link rel="stylesheet" type="text/css" href="{% static "css/util.css" %}">
@@ -19,19 +20,31 @@
     <div class="col-md-12"> <br><h1>Formularios a completar </h1><br><br></div>
 
     <div class="col-md-6" style="overflow: auto; height:650px;">
-      <table class="table">
+      <table data-pagination="true" id="todo" data-toggle="table">
         <thead>
           <tr>
-            <th scope="col">#</th>
-            <th scope="col">Link</th>
-            <th scope="col">Completado</th>
+            <th >#</th>
+            <th >Link</th>
+            <th data-sortable="true">Completado</th>
           </tr>
         </thead>
         <tbody>
           {% for key, forms in forms_todo.items %}
           <tr style="text-align:center">
-            <th scope="row">{{ forloop.counter }}</th>
+            <td scope="row">{{ forloop.counter }}</td>
             <td> <a href="{{ forms.link }}">{{ forms.link }} </a> </td>
+            <td>             
+              {% if forms.done %}
+              <span class="glyphicon glyphicon-ok green"></span>
+              {% else %}
+              <span class="glyphicon glyphicon-remove red" ></span>
+              {% endif %}</td>
+          </tr>
+          {% endfor%}
+          {% for forms in "000011111111111111111111111111111111111000000000000000000000000000000111010101" %}
+          <tr style="text-align:center">
+            <td scope="row">{{ forloop.counter }}</td>
+            <td> <a href="">{{ forloop.counter }} </a> </td>
             <td>             
               {% if forms.done %}
               <span class="glyphicon glyphicon-ok green"></span>
@@ -53,5 +66,7 @@
   <script src="{% static "vendor/bootstrap/js/bootstrap.min.js" %}"></script>
 <!--===============================================================================================-->
   <script src="{% static "js/main.js" %}"></script>
+  <script src="{% static "bootstrap-table-1.12.1/src/bootstrap-table.js" %}"></script>
+
 </body>
 </html>
