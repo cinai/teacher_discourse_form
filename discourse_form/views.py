@@ -184,6 +184,7 @@ def get_answers_back(request,form_id,user):
                 for phrases in ans_phrases:
                     initial_phrases_cc[copus_id].append(phrases.code)
         initial_dialogic = ans_form.dialogic.split('-')
+        d_dict = {0:'Autoritativo',1:'Dialogico'}
         list_dialogic = []
         if 'Autoritativo' in initial_dialogic:
             list_dialogic.append(0)
@@ -191,7 +192,7 @@ def get_answers_back(request,form_id,user):
             list_dialogic.append(1)
         initial_phrases_d = {}
         for dialogic_id in list_dialogic:
-            ans_phrases = Answered_dialogic_phrases.objects.filter(ans_form=ans_form,dialogic=initial_dialogic[dialogic_id])
+            ans_phrases = Answered_dialogic_phrases.objects.filter(ans_form=ans_form,dialogic=d_dict[dialogic_id])
             if ans_phrases.exists():
                 initial_phrases_d[dialogic_id] = []
                 for phrases in ans_phrases:
