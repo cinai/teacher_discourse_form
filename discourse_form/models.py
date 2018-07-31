@@ -23,7 +23,8 @@ class Form_answer(models.Model):
     dialogic = models.CharField(blank=True,default='NA',max_length=40)
     done = models.BooleanField(blank=True,default=False)
     def __str__(self):
-        return self.form.artificial_name + '-' + str(self.ans_date)
+        label_id = str(self.pk)+'-'+self.form.artificial_name
+        return label_id+'-'+str(self.ans_date)
 
 class Answered_subject(models.Model):
     subject = models.ForeignKey(Subject,on_delete=models.CASCADE)
