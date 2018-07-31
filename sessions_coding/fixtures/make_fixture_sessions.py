@@ -13,7 +13,11 @@ df_sessions = pd.read_excel(sessions_path)
 les_dict = []
 
 sessions = [] # list of paths
-counter = 0
+
+counter = 8
+l_init = 21
+l_end = 40
+
 for i,row in df_sessions.iterrows():
     filename = row.file[:-4] + '.txt'
     if row.resumen=='Valido' and filename in sessions_filepaths:
@@ -41,14 +45,14 @@ for i,row in df_sessions.iterrows():
         counter += 1
 
 from itertools import islice
-    
+
 # load 1-20 lines
 for s in sessions:
     file_name = os.path.join(sessions_files_path,s[1])
     with open(file_name,'r', encoding="utf8") as f:
-        array = list(islice(f, 20))
-    a_dict = {'model':'discourse_form.discourse_form','pk':s[0],'fields':{'session':s[0],'init_line':1,'end_line':20,'artificial_name':'_'.join([s[1],'1','20']),'text':''.join(array)}}
+        array = list(islice(f,l_init,l_end))
+    a_dict = {'model':'discourse_form.discourse_form','pk':s[0],'fields':{'session':s[0],'init_line':l_init,'end_line':l_end,'artificial_name':'_'.join([s[1],'1','20']),'text':''.join(array)}}
     les_dict.append(a_dict)
 # output the json file
-with open('data_sessions_jose.json', 'w') as outfile:
+with open('data_sessions_jose_'+str(l_init)+'_'+str(l_end)+'.json', 'w') as outfile:
     json.dump(les_dict, outfile)
