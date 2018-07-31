@@ -14,9 +14,9 @@ les_dict = []
 
 sessions = [] # list of paths
 
-counter = 8
-l_init = 21
-l_end = 41
+counter = 8 + (7*4)
+l_init = 81
+l_end = 101
 
 for i,row in df_sessions.iterrows():
     filename = row.file[:-4] + '.txt'
@@ -39,8 +39,8 @@ for i,row in df_sessions.iterrows():
             date = dt.datetime.fromtimestamp(int(row.date)/1000).isoformat()
         except ValueError:
             date = '2018-05-21'
-        a_dict = {'model':'sessions_coding.classroom_session','pk':counter+8,'fields':{'grade':grade,'teacher':teacher,'wav_name':name,'duration':duration,'content':content,'colegio':colegio,'date':date,'path':path}}
-        sessions.append((counter+8,filename))
+        a_dict = {'model':'sessions_coding.classroom_session','pk':counter,'fields':{'grade':grade,'teacher':teacher,'wav_name':name,'duration':duration,'content':content,'colegio':colegio,'date':date,'path':path}}
+        sessions.append((counter,filename))
         les_dict.append(a_dict)
         counter += 1
 
