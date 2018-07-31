@@ -14,7 +14,7 @@ class Discourse_form(models.Model):
     artificial_name = models.CharField(max_length=100)
     text = models.TextField()
     def __str__(self):
-        return self.artificial_name
+        return str(self.pk)+'-'+self.artificial_name
 
 class Form_answer(models.Model):
     form = models.ForeignKey(Discourse_form, on_delete=models.CASCADE)
