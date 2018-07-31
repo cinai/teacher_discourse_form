@@ -396,7 +396,7 @@ def forms_to_do(request):
     counter = 0
     for d in discourse_forms:
         try:
-            answer = Form_answer.objects.get(form=d.pk,user='patricio.calfucura@ciae.uchile.cl')
+            answer = Form_answer.objects.get(form=d.pk,user='pcalfucura@gmail.com')
         except Form_answer.DoesNotExist:
             answer = None
         link = 'https://discurso-docente.herokuapp.com/encuesta/'+str(d.pk)
