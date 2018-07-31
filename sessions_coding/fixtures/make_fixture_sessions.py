@@ -16,7 +16,7 @@ sessions = [] # list of paths
 
 counter = 8
 l_init = 21
-l_end = 40
+l_end = 41
 
 for i,row in df_sessions.iterrows():
     filename = row.file[:-4] + '.txt'
