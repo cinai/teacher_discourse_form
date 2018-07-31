@@ -250,6 +250,8 @@ def get_skills(request,form_id,user):
             else:
                 if Answered_learning_goal.objects.filter(ans_form=ans_form).exists():
                     Answered_learning_goal.objects.filter(ans_form=ans_form).delete()
+                ans_form.done = True
+                ans_form.save()
                 return HttpResponseRedirect(reverse('discourse_form:thanks'))
         else:
             print("ERROR")
