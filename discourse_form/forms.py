@@ -7,7 +7,7 @@ class TeacherDiscourseForm(forms.Form):
             ('Dialogico','Dialógico'),
             ('NA','Ninguna de las anteriores')]
     email = forms.EmailField(label='E-mail', max_length=100,widget=forms.EmailInput(attrs={'class': 'form-control','required':True,'placeholder':'Ingrese aquí su email'}))
-    subject = forms.ModelMultipleChoiceField(queryset=Subject.objects.exclude(subject='Ninguna'), widget=forms.CheckboxSelectMultiple())
+    subject = forms.ModelMultipleChoiceField(queryset=Subject.objects.all(), widget=forms.CheckboxSelectMultiple())
     copus_code = forms.ModelMultipleChoiceField(queryset=Copus_code.objects.all(),required=False, widget=forms.CheckboxSelectMultiple())#attrs={'class':'list-group'}))
     dummy_copus_code = forms.BooleanField(required=False)
     dialogic = forms.MultipleChoiceField(choices=CHOICES,required=False, widget=forms.CheckboxSelectMultiple())

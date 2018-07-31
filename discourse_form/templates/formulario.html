@@ -160,8 +160,19 @@
     $('[id^="id_dummy_copus_code"]').on('change', function() {
       $('[id^="id_copus_code_"]').prop('checked', false);
       $("[id^='span_id_copus_code']").hide();  
+    });//id_subject_4
+    
+    $('[id^="id_subject_"]').click(function() {
+      label_id = this.id.slice(-1);
+      if (label_id==4){
+        $('[id^="id_subject_"]').prop('checked', false);
+        $('[id^="id_subject_4"]').prop('checked', true);
+      }
+      else{
+        $('[id="id_subject_4"]').prop('checked', false);
+      }
     });
-
+    
     $('[id^="id_copus_code_"]').on('change', function() {
       if (this.checked){
         $("[id='span_"+this.id+"']").show();

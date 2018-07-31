@@ -82,7 +82,10 @@ def get_answers(request,form_id):
                 ans_form.save()
             # save subject
             subject = form.cleaned_data['subject']
+            subject_NA = False
             for s in subject:
+                if str(s) == 'Ninguna de las anteriores':
+                    subject_NA =True
                 ans_sub = Answered_subject(ans_form=ans_form,subject=s)
                 ans_sub.save()
             # save copus codes
@@ -124,6 +127,10 @@ def get_answers(request,form_id):
                                 ans_phrases.save()
             # redirect to next form
             crypted_mail = signing.dumps(email)
+            if subject_NA: # Ningun subject
+                ans_form.done = True
+                ans_form.save()
+                return HttpResponseRedirect(reverse('discourse_form:thanks'))
             return HttpResponseRedirect(reverse('discourse_form:question_2', kwargs={'form_id':form_id,'user':crypted_mail}))
     # if a GET (or any other method) we'll create a blank form
     else:
