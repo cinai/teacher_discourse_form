@@ -18,6 +18,7 @@ from .models import (
     Answered_copus_phrases,
     Answered_dialogic_phrases,
     )
+from sessions_coding.models import Skill
 
 CHOICES = [('Autoritativo','Autoritativo'),
             ('Dialogico','Dialógico'),
@@ -273,6 +274,14 @@ def get_skills(request,form_id,user):
         context['subjects'] = {}
         for ans_subject in subjects:
             # send subject name and form
+            all_skills = Skill.objects.filter(subject=ans_subject.subject)
+            skills_tooltips = {}
+            for skill in all_skills:
+                d = skill.description
+                if d!='nan':
+                    skills_tooltips[skill.pk] = d
+                else:
+                    skills_tooltips[skill.pk] = skill
             subject_name = ans_subject.subject.subject
             # pre_fill
             if Answered_skill.objects.filter(ans_form=ans_form).exists():
@@ -295,7 +304,9 @@ def get_skills(request,form_id,user):
                 initial_axis = []
             form_2 = AfterSubjectForm(subject=ans_subject,grade_session=grade_session,prefix=subject_name,initial_skills=initial_skills,initial_axis=initial_axis)
             context['subjects'][subject_name] = form_2
-    context['form_phrases'] = initial_phrases_skills            
+
+    context['skills_tooltips'] = skills_tooltips      
+    context['form_phrases'] = initial_phrases_skills
     context['text'] = clean_text
     context['user_m'] = user
     context['form_id'] = form_id
@@ -362,9 +373,6 @@ def get_learning_goals(request,form_id,user):
     context['form_id'] = form_id
     return render(request, 'formulario3.html', context)
 
-
-def stupid(request):
-    return HttpResponseNotFound('<h1>Página no encontrada por la amargura de algunos</h1>')
 def yachao(request):
     return render(request, 'chao.html')
 
