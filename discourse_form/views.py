@@ -18,7 +18,7 @@ from .models import (
     Answered_copus_phrases,
     Answered_dialogic_phrases,
     )
-from sessions_coding.models import Skill
+from sessions_coding.models import Skill,Learning_goal
 
 CHOICES = [('Autoritativo','Autoritativo'),
             ('Dialogico','Dialógico'),
@@ -358,9 +358,17 @@ def get_learning_goals(request,form_id,user):
     # if a GET (or any other method) we'll create a blank form
         context = {}
         context['axis'] = {}
+        oa_description = {}
         for ans_axe in ans_axis:
             # send subject name and form
             axe_name = ans_axe.axis.axis
+            general_goals = Learning_goal.objects.filter(axis=ans_axe.axis)
+            for goal in general_goals:
+                d = goal.long_name
+                if d!='nan':
+                    oa_description[goal.pk] = d
+                else:
+                    oa_description[goal.pk] = goal
             if Answered_learning_goal.objects.filter(ans_form=ans_form).exists():
                 initial_goals = [x.goal.id for x in Answered_learning_goal.objects.filter(ans_form=ans_form)]
             else:
@@ -368,6 +376,7 @@ def get_learning_goals(request,form_id,user):
             form_3 = AfterAxisForm(axis=ans_axe,prefix=axe_name,initial_goals=initial_goals)
             context['axis'][axe_name] = form_3 
     text = d_form.text
+    context['oa_description'] = oa_description
     context['text'] = clean_spaces(text.splitlines())
     context['user_m'] = user
     context['form_id'] = form_id

@@ -55,9 +55,20 @@
         <tr>
           <td>
             <div class="form-group" style="margin-bottom:5%">
-                        <label class="label-spec" for="id_skill">Los objetivos de aprendizaje que el docente promueve en la sesión:</label>
-                        {{ form.goal}}
+                        <label class="label-spec" for="id_goal">Los objetivos de aprendizaje que el docente promueve en la sesión:</label>
+                        <ul>
+                    {% for field in form.goal.field.choices %}
+                      <li>
+                        <label for="id_{{axe}}-goal_{{field.0}}" data-toggle="tooltip" title="{{ oa_description|in_dict:field.0 }}"><input type="checkbox" name="{{axe}}-goal" value="{{field.0}}" id="id_{{axe}}-goal_{{field.0}}" {% if field.0 in form.goal.initial %} checked{% endif %}> {{field.1}}</label>
+                        <button type="button" id="span_id_{{axe}}-goal_{{field.0}}"  {% if field.0 in form.goal.initial %} style="" {%else%} style="display:none" {% endif %} ><span  class="glyphicon glyphicon-pencil" ></span></button>
+                      </li>
+
+                    {% endfor %}
+                      <li>
                         {{ form.dummy_goal }} <b>Ninguna de las anteriores</b>
+                        </li>
+                    </ul>
+
                     </div>
           </td>
         </tr>
