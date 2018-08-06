@@ -26,7 +26,7 @@ class Classroom_session(models.Model):
     date = models.DateTimeField(blank=True,null=True)
     path = models.FilePathField(path=settings.FILE_PATH_FIELD_DIRECTORY,max_length=300,blank=True)
     def __str__(self):
-        return self.content+"-"+wav_name
+        return self.content+"-"+self.wav_name
 
 class Subject(models.Model):
     subject = models.CharField(max_length=40)
