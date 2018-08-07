@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    {% load static %}
+    <title>Discurso docente</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static "vendor/bootstrap/css/bootstrap.min.css" %}">
+        <link rel="stylesheet" type="text/css" href="{% static "css/util.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/main.css" %}">
+    <!--===============================================================================================-->
+</head>
+<body style="background-color: #ff5f5f;">
+  <div class="container">
+    <div class= class="col-md-12" style="margin-bottom:15%">
+    </div>
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="panel panel-default">
+              <div class="panel-body">
+
+                <h2 align="center" style="margin-bottom:5%">Registre su email para comenzar</h2>
+                <form>
+                    <span class="has-error">
+                    <label class="control-label" id="label_error" style="display:none">Debe ingresar un mail registrado en el sistema</label>
+                    </span>
+                    <div class="input-group input-group-lg" id="div_form" style="margin-bottom:5%">
+                    <span class="input-group-addon" id="sizing-addon1"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></span>
+                    <input style="height: 50px;font-size:15pt;" type="email" class="form-control" id="inputError1" placeholder="Email">
+                    {{ form.email }}
+                  </div>
+                  <div class="container-contact100-form-btn">
+                    <button type="button" class="contact100-form-btn" style="font-size:15pt;" onclick="validateForm()">
+                      <span>
+                        Ingresar
+                      </span>
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+        </div>
+    </div>
+
+  </div>
+</body>
+  <script src="{% static "vendor/jquery/jquery-3.2.1.min.js" %}"></script>
+  <script src="{% static "vendor/bootstrap/js/bootstrap.min.js" %}"></script>
+  <script>
+      function validateForm(id) {
+        $("#div_form").addClass("has-error");
+        $("#label_error").show();
+      }
+  </script>
+</html>

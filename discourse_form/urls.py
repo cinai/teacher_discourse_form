@@ -16,4 +16,5 @@ urlpatterns = [
     path('gracias/', views.thanks, name='thanks'),
     path('encuestas/', views.forms_to_do, name='encuestas'),
     path('yachao/', views.yachao, name='yachao'),
+    
 ]

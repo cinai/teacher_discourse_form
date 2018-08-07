@@ -25,7 +25,7 @@ CHOICES = [('Autoritativo','Autoritativo'),
             ('NA','Ninguna de las anteriores')]
 
 def index(request):
-    return HttpResponse("Me parece sospechosa tu actitud")
+    return render(request, 'login.html')
 
 def thanks(request):
     return render(request, 'gracias.html')
