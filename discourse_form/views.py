@@ -24,6 +24,9 @@ CHOICES = [('Autoritativo','Autoritativo'),
             ('Dialogico','Dialógico'),
             ('NA','Ninguna de las anteriores')]
 
+def name_detection(request):
+    return render(request, 'html_graph.html')
+
 def index(request):
     return render(request, 'login.html')
 
@@ -433,6 +436,29 @@ def forms_to_do(request):
         counter += 1
 
     forms_answered = Form_answer.objects.filter(user='patricio.calfucura@ciae.uchile.cl')
+    context = {}
+    context['forms_todo'] = a_dict
+    return render(request, 'todo.html', context)
+
+def forms_to_do_paulina(request):
+    discourse_forms = Discourse_form.objects.all()
+    a_dict = {}
+    counter = 0
+    sample = [37, 61, 29, 33, 70, 36, 69, 20, 10, 104, 74, 83, 57, 82, 88, 55, 58, 54, 72, 67, 13, 94, 95, 75, 64, 56, 91, 60, 76, 92]#, 43, 40, 46, 85, 41, 112, 50, 26, 108, 105#], 12, 53, 110, 86, 21, 96, 103, 44, 71, 90]
+    for d in discourse_forms:
+        if d.pk in sample:
+            try:
+                answer = Form_answer.objects.get(form=d.pk,user='paulinajaure@gmail.com')
+            except Form_answer.DoesNotExist:
+                answer = None
+            link = 'https://discurso-docente.herokuapp.com/encuesta/'+str(d.pk)
+            if answer:
+                a_dict[counter] = {'link':link,'done': answer.done}
+            else:
+                a_dict[counter] = {'link':link,'done': 0}
+            counter += 1
+
+    forms_answered = Form_answer.objects.filter(user='paulinajaure@gmail.com')
     context = {}
     context['forms_todo'] = a_dict
     return render(request, 'todo.html', context)
