@@ -24,6 +24,7 @@
                 <form>
                     <span class="has-error">
                     <label class="control-label" id="label_error" style="display:none">Debe ingresar un mail registrado en el sistema</label>
+                    <label class="control-label" id="label_error2" style="display:none">Este mail tampoco está en el sistema</label>
                     </span>
                     <div class="input-group input-group-lg" id="div_form" style="margin-bottom:5%">
                     <span class="input-group-addon" id="sizing-addon1"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></span>
@@ -48,9 +49,22 @@
   <script src="{% static "vendor/jquery/jquery-3.2.1.min.js" %}"></script>
   <script src="{% static "vendor/bootstrap/js/bootstrap.min.js" %}"></script>
   <script>
+    var counter = 0;
       function validateForm(id) {
+        if (counter==0){
         $("#div_form").addClass("has-error");
+        $("#label_error2").hide();
+
         $("#label_error").show();
+        counter = 1;
+        }
+        else{
+            $("#label_error").hide();
+            $("#label_error2").show();
+            counter=0;
+
+        }
+        
       }
   </script>
 </html>
