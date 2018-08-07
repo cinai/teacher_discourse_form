@@ -26,6 +26,8 @@ CHOICES = [('Autoritativo','Autoritativo'),
 
 def name_detection(request):
     return render(request, 'html_graph.html')
+def name_prop(request):
+    return render(request, 'name_proportion.html')
 
 def index(request):
     return render(request, 'login.html')
