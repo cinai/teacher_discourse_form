@@ -1,3 +1,5 @@
+import random
+
 from django.shortcuts import render
 from django.http import HttpResponse,HttpResponseRedirect,HttpResponseNotFound
 from django.urls import reverse
@@ -438,6 +440,29 @@ def forms_to_do(request):
         counter += 1
 
     forms_answered = Form_answer.objects.filter(user='patricio.calfucura@ciae.uchile.cl')
+    context = {}
+    context['forms_todo'] = a_dict
+    return render(request, 'todo.html', context)
+
+def forms_to_do_shuffle(request):
+    discourse_forms = Discourse_form.objects.all()
+    a_dict = {}
+    counter = 0
+    counter_shuffle = random.shuffle(range(len(discourse_forms)))
+    for d in discourse_forms:
+        c = counter_shuffle[counter]
+        try:
+            answer = Form_answer.objects.get(form=d.pk,user='pcalfucura@gmail.com')
+        except Form_answer.DoesNotExist:
+            answer = None
+        link = 'https://discurso-docente.herokuapp.com/encuesta/'+str(d.pk)
+        if answer:
+            a_dict[c] = {'link':link,'done': answer.done}
+        else:
+            a_dict[c] = {'link':link,'done': 0}
+        counter += 1
+
+    #forms_answered = Form_answer.objects.filter(user='patricio.calfucura@ciae.uchile.cl')
     context = {}
     context['forms_todo'] = a_dict
     return render(request, 'todo.html', context)
