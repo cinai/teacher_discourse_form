@@ -25,6 +25,7 @@ class Classroom_session(models.Model):
     colegio = models.ForeignKey(School,on_delete=models.CASCADE,blank=True)
     date = models.DateTimeField(blank=True,null=True)
     path = models.FilePathField(path=settings.FILE_PATH_FIELD_DIRECTORY,max_length=300,blank=True)
+    uploaded = models.BooleanField(default=False,blank=True)
     def __str__(self):
         return self.content+"-"+self.wav_name+"-"+str(self.pk)
 
