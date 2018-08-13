@@ -16,8 +16,8 @@ urlpatterns = [
     path('encuesta/<int:form_id>/<str:user>/back', views.get_answers_back, name='encuesta_back'),
     path('encuesta/<int:form_id>/habilidades_y_eje/<str:user>', views.get_skills, name='question_2'),
     path('gracias/', views.thanks, name='thanks'),
-    path('encuestas/', views.forms_to_do, name='encuestas'),
-    path('encuestas2/', views.forms_to_do_shuffle, name='encuestas2'),
+    path('encuestas/', views.forms_to_do_shuffle, name='encuestas'),
+    path('encuestas2/', views.forms_to_do, name='encuestas2'),
     path('formularios/', views.forms_to_do_paulina, name='formularios'),
     path('yachao/', views.yachao, name='yachao'),
     
