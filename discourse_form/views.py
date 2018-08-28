@@ -500,7 +500,7 @@ def forms_to_do_cinthia(request):
     for d in discourse_forms:
         if d.pk in sample:
             try:
-                answer = Form_answer.objects.get(form=d.pk,user='landeroscastilloc@gmail.com')
+                answer = Form_answer.objects.get(form=d.pk,user='landeroscastillocj@gmail.com')
             except Form_answer.DoesNotExist:
                 answer = None
             link = 'https://discurso-docente.herokuapp.com/encuesta/'+str(d.pk)
