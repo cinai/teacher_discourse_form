@@ -19,6 +19,8 @@ urlpatterns = [
     path('encuestas/', views.forms_to_do_shuffle, name='encuestas'),
     path('encuestas2/', views.forms_to_do, name='encuestas2'),
     path('formularios/', views.forms_to_do_paulina, name='formularios'),
+    path('formularios_cinthia/', views.forms_to_do_cinthia, name='formularios_cinthia'),
+    path('formularios_andrea/', views.forms_to_do_andrea, name='formularios_andrea'),
     path('yachao/', views.yachao, name='yachao'),
     
 ]

@@ -491,3 +491,49 @@ def forms_to_do_paulina(request):
     context = {}
     context['forms_todo'] = a_dict
     return render(request, 'todo.html', context)
+
+def forms_to_do_cinthia(request):
+    discourse_forms = Discourse_form.objects.all()
+    a_dict = {}
+    counter = 0
+    sample = [251, 235, 393, 484, 394, 213, 577, 428, 193, 509, 91, 574, 169, 365, 39, 73, 158, 456, 271, 635, 329, 298, 387, 403, 337, 346, 296, 54, 52, 618, 233, 285, 150, 137, 234, 124, 22, 152, 301, 77, 510, 259, 112, 639, 475, 592, 261, 369, 17, 571, 195, 573, 376, 508, 538, 25, 453, 224, 78, 286]
+    for d in discourse_forms:
+        if d.pk in sample:
+            try:
+                answer = Form_answer.objects.get(form=d.pk,user='landeroscastilloc@gmail.com')
+            except Form_answer.DoesNotExist:
+                answer = None
+            link = 'https://discurso-docente.herokuapp.com/encuesta/'+str(d.pk)
+            if answer:
+                a_dict[counter] = {'link':link,'done': answer.done}
+            else:
+                a_dict[counter] = {'link':link,'done': 0}
+            counter += 1
+
+    forms_answered = Form_answer.objects.filter(user='landeroscastilloc@gmail.com')
+    context = {}
+    context['forms_todo'] = a_dict
+    return render(request, 'todo.html', context)
+
+def forms_to_do_andrea(request):
+    discourse_forms = Discourse_form.objects.all()
+    a_dict = {}
+    counter = 0
+    sample = [333, 592, 319, 164, 595, 288, 43, 217, 390, 211, 445, 107, 72, 151, 349, 510, 357, 186, 189, 629, 531, 247, 559, 430, 309, 503, 379, 276, 450, 371, 429, 246, 471, 165, 491, 102, 476, 484, 24, 490, 82, 469, 183, 532, 137, 134, 571, 616, 261, 426, 482, 574, 184, 256, 477, 381, 354, 201, 130, 279]
+    for d in discourse_forms:
+        if d.pk in sample:
+            try:
+                answer = Form_answer.objects.get(form=d.pk,user='andmancilla8@gmail.com')
+            except Form_answer.DoesNotExist:
+                answer = None
+            link = 'https://discurso-docente.herokuapp.com/encuesta/'+str(d.pk)
+            if answer:
+                a_dict[counter] = {'link':link,'done': answer.done}
+            else:
+                a_dict[counter] = {'link':link,'done': 0}
+            counter += 1
+
+    forms_answered = Form_answer.objects.filter(user='andmancilla8@gmail.com')
+    context = {}
+    context['forms_todo'] = a_dict
+    return render(request, 'todo.html', context)
