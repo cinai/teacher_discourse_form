@@ -445,7 +445,7 @@ def forms_to_do(request):
     return render(request, 'todo.html', context)
 
 def forms_to_do_shuffle(request):
-    discourse_forms = Discourse_form.objects.all()
+    discourse_forms = Discourse_form.objects.filter(session__teacher=4)
     a_dict = {}
     counter = 0
     counter_shuffle = list(range(len(discourse_forms)))#
@@ -470,7 +470,7 @@ def forms_to_do_shuffle(request):
     return render(request, 'todo.html', context)
 
 def forms_to_do_paulina(request):
-    discourse_forms = Discourse_form.objects.all()
+    discourse_forms = Discourse_form.objects.filter(session__teacher=2)
     a_dict = {}
     counter = 0
     sample = [37, 61, 29, 33, 70, 36, 69, 20, 10, 104, 74, 83, 57, 82, 88, 55, 58, 54, 72, 67, 13, 94, 95, 75, 64, 56, 91, 60, 76, 92]#, 43, 40, 46, 85, 41, 112, 50, 26, 108, 105#], 12, 53, 110, 86, 21, 96, 103, 44, 71, 90]
