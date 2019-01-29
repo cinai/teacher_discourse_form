@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    {% load static %}
+    {% load my_tags %}
+
+    <title>Discurso docente</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static "vendor/bootstrap/css/bootstrap.min.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "fonts/font-awesome-4.7.0/css/font-awesome.min.css" %}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static "fonts/iconic/css/material-design-iconic-font.min.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/util.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/main.css" %}">
+    <!-- Custom styles for this template
+    <link href="form-validation.css" rel="stylesheet"> noScroll-->
+  </head>
+
+  <body class="bg-light ">
+    <div class="container-contact100">
+      <div class="wrap-contact100">
+        <div class="row" style="margin-bottom:5%">
+          <div class="col-md-12 ">
+          <span class="">
+            <h1>Descripción del discurso docente - parte 2</h1>
+          </span>
+        </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 order-md-1">
+            <div class="panel panel-info">
+              <div class="panel-heading">
+                Fragmento de sesión a describir
+              </div>
+              <div class="panel-body">
+              <pre class="pre-scrollable " style='white-space:pre-wrap;word-break: keep-all;'>
+{% for line in text %}
+{{ forloop.counter}}- {{ line }}
+{% endfor %}
+            </pre>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row ">
+          <div class="col-md-1 order-md-2 mb-4">
+          </div>
+          <div class="col-md-11 order-md-1 pre-scrollable">
+            <form action="" method="post">
+            <table>
+    		{% csrf_token %}
+
+    		{% for subject, form in subjects.items %}
+
+				<tr>
+					<td>
+
+							<div class="" style="margin-bottom:2%">
+									Con respecto a la asignatura <b>{{subject}}</b>, seleccione:
+							</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+            {% if form.skill|length > 0 %}
+            <div class="form-group" style="margin-top:2%;margin-bottom:5%">
+              <div class="col-md-11" style="margin-bottom:1%">
+              <label class="label-spec" for="id_skill">Las <b>habilidades</b> que el docente promueve en la sesión:</label>
+              </div>
+                {% if form.skill|length < 7 %}
+                <div class="col-md-11">
+                  <ul>
+                    {% for field in form.skill.field.choices %}
+                      <li>{{ field }}
+                        <button type="button" id="span_{{ field.id_for_label}}"  style="display:none"><span  class="glyphicon glyphicon-th-list" ></span></button>
+                        <!-- Modal -->
+                          <div class="modal fade in bd-example-modal-lg" id="myModal_{{ field.id_for_label}}" role="dialog">
+                            <div class="modal-dialog modal-lg vertical-align-center">
+                            
+                              <!-- Modal content-->
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h4 class="modal-title" id="my_title_{{ field.id_for_label }}"></h4>
+                                </div>
+                                <div class="modal-body">
+                                  <pre class="pre-scrollable " style='white-space:pre-wrap;word-break: keep-all;'>
+{% for line in text %}
+<label><input type="checkbox" name="input_{{ field.id_for_label }}_{{ forloop.counter }}" value="{{ line }}"> {{ forloop.counter}}- {{ line }}</label>
+{% endfor %}</pre>
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-default" data-dismiss="modal">Guardar</button>
+                                </div>
+                              </div>
+                              
+                            </div>
+                          </div>
+                      </li>
+                    {% endfor %}
+                    <li>{{ form.dummy_skill }} <b>Ninguna de las anteriores</b></li>
+                  </ul>
+                </div>
+                {% else %}
+                <div class="col-md-4">
+                  <ul>
+                    {% for field in form.skill.field.choices %}
+                      {% ifequal forloop.counter0|modulo:6 0 %}</ul></div><div class="col-md-4"><ul>{% endifequal %}
+                      <li>{{ field }}
+                        <button type="button" id="span_{{ field.id_for_label}}" style="display:none"><span  class="glyphicon glyphicon-th-list" ></span></button>
+                        <!-- Modal -->
+                          <div class="modal fade in bd-example-modal-lg" id="myModal_{{ field.id_for_label}}" role="dialog">
+                            <div class="modal-dialog  modal-lg vertical-align-center">
+                            
+                              <!-- Modal content-->
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                  <h4 class="modal-title" id="my_title_{{ field.id_for_label }}"></h4>
+                                </div>
+                                <div class="modal-body">
+                                  <pre class="pre-scrollable " style='white-space:pre-wrap;word-break: keep-all;'>
+{% for line in text %}
+
+<label><input type="checkbox" name="input_{{ field.id_for_label }}_{{ forloop.counter }}" value="{{ line }}"> {{ forloop.counter}}- {{ line }}</label>
+{% endfor %}</pre>
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                              </div>
+                              
+                            </div>
+                          </div>
+                        
+                      </li>
+                    {% endfor %}
+                     <li>{{ form.dummy_skill }} <b>Ninguna de las anteriores</b></li>
+                  </ul>
+                </div>
+                {% endif %}
+            </div>
+            {% else %}
+            <script>
+                alert('Esta sesión no cuenta con habilidades asociados a {{subject}}, por favor antes de continuar contactese con Catalina');
+              </script>
+            {% endif %}
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group" style="margin-top:2%;margin-bottom:5%">
+              {% ifequal form.axis|length 0 %}
+              <script>
+                alert('Esta sesión no cuenta con ejes asociados a {{subject}}, por favor antes de continuar contactese con Catalina');
+              </script>
+              {% else %}
+              <div class="col-md-11" style="margin-bottom:2%">
+              <label class="label-spec" for="id_axis" style="margin-bottom:1%"">Los <b>ejes</b> que el docente promueve en la sesión:</label>
+              {{ form.axis}}
+              {{ form.dummy_axis }} <b>Ninguna de las anteriores</b>
+              </div>
+              {% endifequal %}
+            </div>
+
+					</td>
+				</tr>
+        {% if form.skill.errors %}
+        <script>alert('Es necesario que seleccione al menos una habilidad');</script>
+        {% else %}
+          {% if form.axis.errors %}
+          <script>alert('Es necesario que seleccione al menos un eje');</script>
+          {% endif %}
+        {% endif %}
+			{% endfor %}
+			</table>
+      <div class="col-md-4 order-md-1">
+           <div class="container-contact100-form-btn">
+            <button type="submit" class="contact100-form-btn-l" formaction={% url 'discourse_form:encuesta_back' form_id user_m %}>
+              <span>
+                <i class="fa fa-long-arrow-left m-l-7" aria-hidden="true"></i>
+                Atrás
+              </span>
+            </button>
+            </div>
+        </div>
+
+        <div class="col-md-3 order-md-2">
+        </div>
+          <div class="col-md-4 order-md-2">
+          <div class="container-contact100-form-btn">
+            <button type="submit" class="contact100-form-btn" onclick="return validateForm()">
+              <span>
+                Siguiente
+                <i class="fa fa-long-arrow-right m-l-7" aria-hidden="true"></i>
+              </span>
+            </button>
+        </div>
+      </div>
+        </form>
+          </div>
+
+      </div>
+      </div>
+
+      <footer class="my-5 pt-5 text-muted text-center text-small">
+        <!--
+        <p class="mb-1">&copy; 2018 </p>
+        <ul class="list-inline">
+          <li class="list-inline-item"><a href="#">Privacy</a></li>
+          <li class="list-inline-item"><a href="#">Terms</a></li>
+          <li class="list-inline-item"><a href="#">Ayuda</a></li>
+        </ul>
+        -->
+      </footer>
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <!--===============================================================================================-->
+  <script src="{% static "vendor/jquery/jquery-3.2.1.min.js" %}"></script>
+<!--===============================================================================================-->
+<!--===============================================================================================-->
+  <script src="{% static "vendor/bootstrap/js/popper.js" %}"></script>
+  <script src="{% static "vendor/bootstrap/js/bootstrap.min.js" %}"></script>
+<!--===============================================================================================-->
+  <script>
+    {% for subject, form in subjects.items %}
+
+    $('[id^="id_{{ subject }}-dummy_skill"]').on('change', function() {
+      $('[id^="id_{{ subject }}-skill_"]').prop('checked', false);  
+    });
+    $("[id^='id_{{ subject }}-skill_']").on('change', function() {
+      if (this.checked){
+        $("[id='span_"+this.id+"']").show();
+      }
+      else{
+        $("[id='span_"+this.id+"']").hide();
+      }
+      // add element glyphicon glyphicon-th-list to span
+      $('[id^="id_{{ subject }}-dummy_skill"]').prop('checked', false);  
+    });
+    $('[id^="id_{{ subject }}-dummy_axis"]').on('change', function() {
+      $('[id^="id_{{ subject }}-axis_"]').prop('checked', false);  
+    });
+    $('[id^="id_{{ subject }}-axis_"]').on('change', function() {
+      $('[id^="id_{{ subject }}-dummy_axis"]').prop('checked', false);  
+    });
+    {% endfor %}
+    function validateForm(id) {
+      {% for subject, form in subjects.items %}
+
+        var checkk = $('[id^="id_{{ subject }}-skill"]');
+        var checkedOne = Array.prototype.slice.call(checkk).some(x => x.checked);
+        if (checkedOne == false){
+          if ($('[id^="id_{{ subject }}-dummy_skill"]').prop('checked') == false){
+            alert("Por favor seleccione al menos una habilidad para la asignatura {{ subject }}");
+            return false;
+          }
+        }
+        var checkk = $('[id^="id_{{ subject }}-axis"]');
+        var checkedOne = Array.prototype.slice.call(checkk).some(x => x.checked);
+        if (checkedOne == false){
+          if ($('[id^="id_{{ subject }}-dummy_axis"]').prop('checked') == false){
+            alert("Por favor seleccione al menos un eje para la asignatura {{ subject }}");
+            return false;
+          }
+        }
+      {% endfor %}
+      return true;
+    }
+    $( document ).ready(function() {
+      $('[id^="span_id_"]').click(function() {
+        console.log(this.id.substring(5));
+        label_text = $("[id='"+this.id.substring(5)+"']").parent().text();
+        label_id = this.id.substring(4);
+        $("[id='my_title"+label_id+"']").text('Seleccione las líneas del fragmento que se relacionan con '+label_text);
+        $("[id='myModal"+label_id+"']").modal();
+            
+        });
+//data-toggle="modal" data-target="#myModal_{{ field.id_for_label}}" 
+    });
+  </script>
+
+<!--===============================================================================================-->
+  <script src="{% static "js/main.js" %}"></script>
+  </body>
+</html>
